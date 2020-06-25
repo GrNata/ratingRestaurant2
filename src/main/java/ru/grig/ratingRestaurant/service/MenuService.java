@@ -1,6 +1,7 @@
 package ru.grig.ratingRestaurant.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import ru.grig.ratingRestaurant.model.Menu;
 import ru.grig.ratingRestaurant.model.Restaurant;
 import ru.grig.ratingRestaurant.repository.MenuRepository;
@@ -20,6 +21,7 @@ public class MenuService {
     }
 
     public Menu create(Menu menu, long restId) {
+        Assert.notNull(menu, "Restaurant must not be NULL");
         return menuRepository.save(menu, restId);
     }
 
@@ -36,6 +38,7 @@ public class MenuService {
     }
 
     public void update(Menu menu, long restId) {
+        Assert.notNull(menu, "Restaurant must not be NULL");
         checkNotFoundWithId(menuRepository.save(menu, restId), menu.getId());
     }
 

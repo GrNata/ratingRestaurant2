@@ -9,6 +9,9 @@ import java.util.List;
 
 public class MenuUtil {
 
+    public MenuUtil() {
+    }
+
     public static List<MenuWithRestaurant> getAll(List<Restaurant> restaurants, List<Menu> menus) {
         List<MenuWithRestaurant> menuWithRestaurants = new ArrayList<>();
         for (Menu m : menus){

@@ -1,6 +1,7 @@
 package ru.grig.ratingRestaurant.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import ru.grig.ratingRestaurant.model.Menu;
 import ru.grig.ratingRestaurant.model.Rating;
 import ru.grig.ratingRestaurant.repository.MenuRepository;
@@ -22,6 +23,7 @@ public class RatingService {
     }
 
     public Rating create(Rating rating) {
+        Assert.notNull(rating, "Restaurant must not be NULL");
         return ratingRepository.save(rating);
     }
 
@@ -38,6 +40,7 @@ public class RatingService {
     }
 
     public void update(Rating rating) {
+        Assert.notNull(rating, "Restaurant must not be NULL");
         checkNotFoundWithId(ratingRepository.save(rating), rating.getId());
     }
 
@@ -97,6 +100,7 @@ public class RatingService {
     }
 
     public List<Rating>  getAllByDate(LocalDate date) {
+        Assert.notNull(date, "Restaurant must not be NULL");
         List<Rating> ratingList = ratingRepository.getAll();
         return ratingList.stream()
                 .filter(r -> r.getDateVote().equals(date))

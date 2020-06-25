@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import ru.grig.ratingRestaurant.controller.web.SecurityUtil;
 import ru.grig.ratingRestaurant.model.User;
 import ru.grig.ratingRestaurant.model.Vote;
@@ -31,7 +32,8 @@ public class VoteService {
 
     public Vote create(Vote vote, long userId) {
         log.info("create user: {}", vote);
-        System.out.println("vote.date = "+vote.getVoteDate()+"   Date.now = "+LocalDate.now()+"    boolean = "+vote.getVoteDate().equals(LocalDate.now()));
+        Assert.notNull(vote, "Restaurant must not be NULL");
+//        System.out.println("vote.date = "+vote.getVoteDate()+"   Date.now = "+LocalDate.now()+"    boolean = "+vote.getVoteDate().equals(LocalDate.now()));
 //        return voteRepository.save(vote);
         return (LocalTime.now().isBefore(getTimeBefore()) &&
                 vote.getVoteDate().equals(LocalDate.now())) ?
@@ -56,6 +58,7 @@ public class VoteService {
 
 
     public Long update(Vote vote, long userId) {
+        Assert.notNull(vote, "Restaurant must not be NULL");
         Long idRest = null;
 //        if (LocalTime.now().isBefore(getTimeBefore())) {
 //            Vote voteGet = getByUserIdAndDateNow();

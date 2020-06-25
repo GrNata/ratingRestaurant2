@@ -5,6 +5,9 @@ import java.time.LocalTime;
 public class SecurityUtil {
     private static LocalTime TIME_BEFORE = LocalTime.of(21, 00);
 
+    public SecurityUtil() {
+    }
+
     private static long id;
 
     public static long authUserId() {
