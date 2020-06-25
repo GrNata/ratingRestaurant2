@@ -4,13 +4,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.grig.ratingRestaurant.model.Rating;
 import ru.grig.ratingRestaurant.repository.RatingRepository;
+import ru.grig.ratingRestaurant.util.exception.NotFoundException;
+
+import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.Assert.*;
+import static ru.grig.ratingRestaurant.RatingTestData.*;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
@@ -31,34 +38,89 @@ public class RatingServiceTest {
     RatingRepository repository;
 
     @Test
-    public void create() {
+    public void create() throws Exception{
+        Rating newReting = getNew();
+        Rating created = service.create(newReting);
+        Long newId = created.getId();
+        newReting.setId(newId);
+        assertMatch(created, newReting);
+        assertMatch(service.get(newId), newReting);
     }
 
     @Test
-    public void get() {
+    public void get() throws Exception {
+        Rating rating = service.get(RATING_ID);
+        assertMatch(rating, RATING_1);
     }
 
     @Test
-    public void delete() {
+    public void getNotFound() throws Exception {
+        assertThrows(NotFoundException.class, () -> service.get(NOT_FOUNR_ID));
     }
 
     @Test
-    public void getAll() {
+    public void delete() throws Exception {
+        service.delete(RATING_ID);
+        assertFalse(repository.delete(RATING_ID));
+    }
+
+    @Test
+    public void deleteNotFound() throws Exception {
+        assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUNR_ID));
+    }
+
+    @Test
+    public void getAll() throws Exception {
+        List<Rating> all = service.getAll();
+        assertMatch(all, RATING_1, RATING_2, RATING_3, RATING_4, RATING_5, RATING_6, RATING_7, RATING_8, RATING_9);
     }
 
     @Test
     public void update() {
+        Rating updated = getUpdate();
+        service.update(updated);
+        assertMatch(service.get(RATING_ID), updated);
     }
 
     @Test
-    public void setByVote() {
+    public void getAllByDate() throws Exception {
+        List<Rating> ratingList = service.getAllByDate(RATING_DATE);
+        assertMatch(ratingList, RATING_1, RATING_2, RATING_3);
     }
 
     @Test
-    public void getRatingByRestaurant() {
+    public void setByVote() throws Exception {
+        service.setByVote(RATING_ID, RATING_DATE);
+        assertMatch(service.get(RATING_ID).getCountVote(), RATING_VOTE_FOR_DAY);
+    }
+
+    @Test
+    public void setByVoteNotChange() throws Exception {
+//        service.setByVote(RATING_ID, RATING_DATE);
+        assertNotEquals(service.get(RATING_ID).getCountVote(), RATING_VOTE_FOR_DAY);
+//        assertThrows(NotFoundException.class, () -> service.setByVote(NOT_FOUNR_ID, RATING_DATE));
+//        assertThrows(NotFoundException.class, () -> service.setByVote(RATING_ID, RATING_DATE_NOT_FOUND));
+    }
+
+    @Test
+    public void getRatingByRestaurant() throws Exception {
+        int vote = service.getRatingByRestaurant(RATING_ID);
+        assertMatch(vote, RATING_VOTE);
+    }
+
+    @Test
+    public void getRatingByRestaurantNoyFound() throws Exception {
+        assertThrows(NotFoundException.class, () -> service.getRatingByRestaurant(NOT_FOUNR_ID));
     }
 
     @Test
     public void incrementVote() {
+        Rating newReting = getNewByDateToday();
+        Rating created = service.create(newReting);
+        Long newId = created.getId();
+        newReting.setId(newId);
+        service.incrementVote(RATING_ID);
+        Rating increment = DataAccessUtils.singleResult(service.getAllByDate(LocalDate.now()));
+        assertMatch(increment.getCountVote(), RATING_VOTE_INCREMENT);
     }
 }

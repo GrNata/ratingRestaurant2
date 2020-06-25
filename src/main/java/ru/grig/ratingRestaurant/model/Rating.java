@@ -3,8 +3,9 @@ package ru.grig.ratingRestaurant.model;
 import java.time.LocalDate;
 
 public class Rating extends AbstractBaseEntity {
+//public class Rating {
 //    private Long id;
-    private long idRestaurant;
+    private Long idRestaurant;
     private int countVote;
     private LocalDate dateVote;
 
@@ -13,8 +14,12 @@ public class Rating extends AbstractBaseEntity {
     public Rating(Rating r) {
         this(r.getId(), r.getIdRestaurant(), r.getCountVote(), r.getDateVote());
     }
+//    public Rating(Rating r) {
+//        this(r.getIdRestaurant(), r.getCountVote(), r.getDateVote());
+//    }
 
     public Rating(long idRestaurant, int countVote, LocalDate dateVote) {
+//        this(idRestaurant, countVote, dateVote);
         this(null, idRestaurant, countVote, dateVote);
 //        this.idRestaurant = idRestaurant;
 //        this.countVote = countVote;
@@ -30,20 +35,20 @@ public class Rating extends AbstractBaseEntity {
     }
 
 //    public boolean isNew() {
-//        return id == null;
+//        return idRestaurant != null && dateVote;
 //    }
 
     public boolean isNewDate() {
         return dateVote == null;
     }
 
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public long getIdRestaurant() {
         return idRestaurant;
@@ -78,4 +83,24 @@ public class Rating extends AbstractBaseEntity {
                 ", dateVote=" + dateVote +
                 '}';
     }
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) {
+//            return true;
+//        }
+//        if (o == null || getClass() != o.getClass()) {
+//            return false;
+//        }
+//        AbstractBaseEntity that = (AbstractBaseEntity) o;
+////        return id != null && id.equals(that.id);
+//        return idRestaurant != null && idRestaurant.equals(this.idRestaurant)
+//                && dateVote != null && dateVote.equals(this.dateVote);
+//    }
+//
+////    @Override
+//    public int hashCode() {
+//        int idInt = Integer.parseInt(idRestaurant.toString());
+//        return idRestaurant == null ? 0 : idInt;
+//    }
 }

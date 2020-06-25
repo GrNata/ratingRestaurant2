@@ -1,6 +1,7 @@
 package ru.grig.ratingRestaurant.model;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -17,10 +18,12 @@ public class User extends AbstractNameEntity {
 
     public User(User u) {
         this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getRegistered(), u.isEnable(), u.getRole());
+//        this(u.getId(), u.getName(), u.getEmail(), u.getPassword(), u.getRegistered(), u.getRole());
 
     }
 
     public User(Long id, String name, String email, String password,
+//                LocalDate registered, Set<Role> roles) {
                 LocalDate registered, boolean enable, Set<Role> roles) {
         super(id, name);
         this.email = email;
@@ -31,9 +34,13 @@ public class User extends AbstractNameEntity {
     }
 
         public User(Long id, String name, String email, String password,
+//                LocalDate registered, Role role, Role... roles) {
                 LocalDate registered, boolean enable, Role role, Role... roles) {
+//        this(id, name, email, password, registered, EnumSet.of(role, roles));
         this(id, name, email, password, registered, enable, EnumSet.of(role, roles));
     }
+
+
 
 //    public boolean isNew() {
 //        return id == null;

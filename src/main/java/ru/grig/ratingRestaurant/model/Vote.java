@@ -38,6 +38,14 @@ public class Vote extends AbstractBaseEntity {
         this.voteDateTime = dateTime;
     }
 
+    public Vote(Long id, long idUser, long idRestaurant, LocalDateTime dateTime) {
+        super(id);
+        this.idUser = idUser;
+        this.idRestaurant = idRestaurant;
+        this.voteDateTime = dateTime;
+    }
+
+
 //    public boolean isNew()  {   return id == null;  }
 
 //    public Long getId() {

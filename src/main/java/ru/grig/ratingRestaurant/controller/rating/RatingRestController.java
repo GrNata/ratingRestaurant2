@@ -18,10 +18,10 @@ public class RatingRestController {
     @Autowired
     RatingService ratingService;
 
-    public Rating get(long id) {
-        log.info("get id {}", id);
-        return ratingService.get(id);
-    }
+//    public Rating get(long id) {
+//        log.info("get id {}", id);
+//        return ratingService.get(id);
+//    }
 
     public void delete(long id) {
         log.info("delete id {}", id);
@@ -34,14 +34,14 @@ public class RatingRestController {
 
     public Rating create(Rating rating){
         log.info("create rating: {}", rating);
-        checkNew(rating);
+//        checkNew(rating);
         return ratingService.create(rating);
     }
 
-    public void update(Rating rating){
-        log.info("update rating: {}", rating);
-        ratingService.update(rating);
-    }
+//    public void update(Rating rating){
+//        log.info("update rating: {}", rating);
+//        ratingService.update(rating);
+//    }
 
     public void setByVote(Long idRestaurant, LocalDate date) {
         log.info("setByVote");

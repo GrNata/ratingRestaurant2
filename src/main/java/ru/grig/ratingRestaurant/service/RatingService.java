@@ -8,6 +8,7 @@ import ru.grig.ratingRestaurant.repository.RatingRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.grig.ratingRestaurant.util.ValidationUtil.*;
 
@@ -41,64 +42,64 @@ public class RatingService {
     }
 
     public void setByVote(Long idRestaurant, LocalDate date) {
-        //_____________________
-//        date = LocalDate.now();
-        //_____________________
+        List<Rating> all = ratingRepository.getAll();
         int vote = 0;
         boolean isRest = true;
-//        for (Map.Entry<Long, Rating> rat : repository.entrySet()) {
-//            if (rat.getValue().getDateVote().equals(date) && rat.getValue().getIdRestaurant() == idRestaurant){
-//                vote = rat.getValue().getCountVote();
-//                vote++;
-//                rat.getValue().setCountVote(vote);
-//                isRest = false;
-//                break;
-//            }
-//        }
-        for (Rating rating : getAll()) {
+
+        for (Rating rating : all) {
             if (rating.getDateVote().equals(date) && rating.getIdRestaurant() == idRestaurant) {
-//            if (rating.getIdRestaurant() == idRestaurant) {
                 vote = rating.getCountVote();
                 vote++;
                 rating.setCountVote(vote);
-                update(rating);
+                ratingRepository.save(rating);
                 isRest = false;
                 break;
             }
         }
         if (isRest){
             vote++;
-            create(new Rating(idRestaurant, vote, date));
+            ratingRepository.save(new Rating(idRestaurant, vote, date));
         }
     }
 
+//  Подсчет голосов у ресторана
     public int getRatingByRestaurant(Long idRestaurant) {
+        List<Rating> all = ratingRepository.getAll();
         int vote = 0;
         int voteAll = 0;
-        for (Rating rat : getAll()) {
+        for (Rating rat : all) {
             voteAll = voteAll + rat.getCountVote();
             if (rat.getIdRestaurant() == idRestaurant){
                 vote = vote + rat.getCountVote();
             }
         }
-        return vote;        //  пока количество голосов, vote/voteAll*100 - процент
+        return vote;
     }
 
+//  удаление голоса добавленного в этот день
     public void incrementVote(Long idRest){
         Rating rating = getByIdRest(idRest);
         if (rating != null) {
             int vote = rating.getCountVote() - 1;
             rating.setCountVote(vote);
+            ratingRepository.save(rating);
         }
     }
 
     private Rating getByIdRest(long idRest) {
-        for (Rating r : getAll()) {
+        List<Rating> all = ratingRepository.getAll();
+        for (Rating r : all) {
             if (r.getIdRestaurant() == idRest && r.getDateVote().equals(LocalDate.now())) {
-                System.out.println("RATING_SERVICE getByIdRest r: "+r);
                 return r;
             }
         }
         return null;
+    }
+
+    public List<Rating>  getAllByDate(LocalDate date) {
+        List<Rating> ratingList = ratingRepository.getAll();
+        return ratingList.stream()
+                .filter(r -> r.getDateVote().equals(date))
+                .collect(Collectors.toList());
     }
 }

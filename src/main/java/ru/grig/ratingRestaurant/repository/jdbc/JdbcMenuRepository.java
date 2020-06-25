@@ -46,7 +46,7 @@ public class JdbcMenuRepository implements MenuRepository {
                     "UPDATE menu SET " +
                             "idrestaurant=:idrestaurant, " +
                             "dishes=:dishes, " +
-                            "price=:price", map) == 0) {
+                            "price=:price WHERE id=:id", map) == 0) {
                 return null;
             }
         return menu;

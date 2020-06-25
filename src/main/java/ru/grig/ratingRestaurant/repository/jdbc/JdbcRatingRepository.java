@@ -25,8 +25,8 @@ public class JdbcRatingRepository implements RatingRepository {
 
     public JdbcRatingRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.insertRating = new SimpleJdbcInsert(jdbcTemplate)
-                                .withTableName("rating")
-                                .usingGeneratedKeyColumns("id");
+                .withTableName("rating")
+                .usingGeneratedKeyColumns("id");
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
@@ -39,42 +39,43 @@ public class JdbcRatingRepository implements RatingRepository {
                 .addValue("countvote", rating.getCountVote())
                 .addValue("datevote", rating.getDateVote());
         if (rating.isNew()) {
-            Number newKey = insertRating.executeAndReturnKey(map);
-            rating.setId(newKey.longValue());
+            Number newId = insertRating.executeAndReturnKey(map);
+            rating.setId(newId.longValue());
         } else
-            if (namedParameterJdbcTemplate.update(
-                    "UPDATE rating SET idrestaurant=:idrestaurant, " +
-                            "countvote=:countvote, " +
-                            "datevote=:datevote", map
-            ) == 0){
+            if (namedParameterJdbcTemplate.update("UPDATE rating SET " +
+                    "idrestaurant=:idrestaurant, " +
+                    "countvote=:countvote, " +
+                    "datevote=:datevote WHERE id=:id", map)
+            == 0) {
                 return null;
             }
-        return rating;
+            return rating;
     }
 
     @Override
     public Rating get(long id) {
-        List<Rating> ratingList = jdbcTemplate.query(
-                "SELECT * FROM rating WHERE id=?", ROW_MAPPER, id
-        );
+        List<Rating> ratingList = jdbcTemplate.query("" +
+                "SELECT * FROM rating WHERE id=?", ROW_MAPPER, id);
         return DataAccessUtils.singleResult(ratingList);
     }
 
     @Override
     public boolean delete(long id) {
-        return jdbcTemplate.update(
-                "DELETE FROM rating WHERE id=?", id
-        ) != 0;
+        return jdbcTemplate.update("DELETE FROM rating WHERE id=?", id) != 0;
     }
 
     @Override
     public List<Rating> getAll() {
-        return jdbcTemplate.query(
-                "SELECT * FROM rating", ROW_MAPPER);
+        return jdbcTemplate.query("SELECT * FROM rating", ROW_MAPPER);
     }
 
-    @Override
-    public List<Rating> getAllByDate(LocalDate date) {
-        return null;
-    }
+//    @Override
+//    public void setByVote(Long idRestaurant, LocalDate date) {
+//
+//    }
+
+//    @Override
+//    public int getRatingByRestaurant(Long idRestaurant) {
+//        return jdbcTemplate.query("SELECT * FROM rating WHERE idrestaurant=:id", ROW_MAPPER, idRestaurant);
+//    }
 }

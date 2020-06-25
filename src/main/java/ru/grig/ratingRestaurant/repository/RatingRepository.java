@@ -16,9 +16,9 @@ public interface RatingRepository {
 
     List<Rating> getAll();
 
-    List<Rating> getAllByDate(LocalDate date);
+//    List<Rating> getAllByDate(LocalDate date);
 
 //    void setByVote(Long idRestaurant, LocalDate date);
-//
+
 //    int getRatingByRestaurant(Long idRestaurant);
 }

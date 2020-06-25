@@ -45,7 +45,7 @@ public class JdbcVoteRepository implements VoteRepository {
                     "UPDATE vote SET " +
                             "iduser=:iduser, " +
                             "idrestaurant=:idrestaurant, " +
-                            "votedatetime=:votedatetime", map
+                            "votedatetime=:votedatetime WHERE id=:id", map
             )
              == 0) {
                 return null;

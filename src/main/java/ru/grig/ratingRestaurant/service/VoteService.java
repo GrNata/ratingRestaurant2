@@ -55,7 +55,7 @@ public class VoteService {
         Long idRest = null;
 //        if (LocalTime.now().isBefore(getTimeBefore())) {
             Vote voteGet = getByUserIdAndDateNow();
-            System.out.println("VoreService update / getByUserIdAndDateNow - " + voteGet);
+//            System.out.println("VoreService update / getByUserIdAndDateNow - " + voteGet);
             if (voteGet != null) {
                 idRest = voteGet.getIdRestaurant();
                 vote.setId(voteGet.getId());
@@ -66,9 +66,9 @@ public class VoteService {
 //        checkNotFoundWithId(voteRepository.save(vote), vote.getId());
     }
 
-    public List<Vote> getByUserId(Vote vote) {
+    public List<Vote> getByUser(Vote vote) {
         List<Vote> voteList = new ArrayList<>();
-        List<Vote> votes = getAll();
+        List<Vote> votes = voteRepository.getAll();
         for (Vote v : votes){
             if (v.getIdUser() == authUserId()){
                 voteList.add(v);
@@ -80,7 +80,7 @@ public class VoteService {
     private Vote getByUserIdAndDateNow() {
         List<Vote> voteList = getAll();
         for (Vote vote : voteList){
-            System.out.println("VOTE getDate = "+vote.getVoteDate()+"  date now = "+LocalDate.now());
+//            System.out.println("VOTE getDate = "+vote.getVoteDate()+"  date now = "+LocalDate.now());
             if (vote.getIdUser() == authUserId() && vote.getVoteDate().equals(LocalDate.now())) {
                 return vote;
             }
