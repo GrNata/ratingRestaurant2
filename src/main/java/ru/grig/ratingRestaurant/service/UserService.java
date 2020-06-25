@@ -40,4 +40,8 @@ public class UserService {
     public void update(User user) {
         checkNotFoundWithId(userRepository.save(user), user.getId());
     }
+
+    public User getByEmail(String email) {
+        return userRepository.getByEmail(email);
+    }
 }

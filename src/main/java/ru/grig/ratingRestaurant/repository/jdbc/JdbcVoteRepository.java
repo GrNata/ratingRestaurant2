@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import ru.grig.ratingRestaurant.model.Vote;
 import ru.grig.ratingRestaurant.repository.VoteRepository;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Repository
@@ -19,6 +20,8 @@ public class JdbcVoteRepository implements VoteRepository {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final SimpleJdbcInsert insertVote;
+
+//    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Autowired
 
@@ -36,7 +39,7 @@ public class JdbcVoteRepository implements VoteRepository {
                 .addValue("id", vote.getId())
                 .addValue("iduser", vote.getIdUser())
                 .addValue("idrestaurant", vote.getIdRestaurant())
-                .addValue("votedatetime", vote.getVoteDateTime());
+                .addValue("votedatetime", vote.getVoteDate());
         if (vote.isNew()) {
             Number newKey = insertVote.executeAndReturnKey(map);
             vote.setId(newKey.longValue());

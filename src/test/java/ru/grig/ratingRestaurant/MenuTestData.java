@@ -2,6 +2,7 @@ package ru.grig.ratingRestaurant;
 
 
 import ru.grig.ratingRestaurant.model.Menu;
+import ru.grig.ratingRestaurant.model.Rating;
 
 import java.util.Arrays;
 
@@ -9,9 +10,11 @@ import static ru.grig.ratingRestaurant.RestaurantTestData.REST_ID_1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MenuTestData {
-    public static final int START_MENU_SEQ = 100000;
+
+    public static TestMatcher<Menu> MENU_MATCHER = TestMatcher.usingFieldsComparator();
+
     public static final long NOT_FOUNR_ID = 10;
-    public static final long MENU_ID = START_MENU_SEQ;
+    public static final long MENU_ID = 100000;
 
     public static final Menu MENU_1_1 = new Menu(MENU_ID, REST_ID_1, "dish 1", 100);
     public static final Menu MENU_1_2 = new Menu(MENU_ID+1, REST_ID_1,  "dish 2", 150);
@@ -34,15 +37,4 @@ public class MenuTestData {
         return updated;
     }
 
-    public static void assertMatch(Menu actual, Menu expected) {
-        assertThat(actual).isEqualTo(expected);
-    }
-
-    public static void assertMatch(Iterable<Menu> actual, Menu... expected) {
-        assertMatch(actual, Arrays.asList(expected));
-    }
-
-    public static void assertMatch(Iterable<Menu> actual, Iterable<Menu> expected) {
-        assertThat(actual).isEqualTo(expected);
-    }
 }

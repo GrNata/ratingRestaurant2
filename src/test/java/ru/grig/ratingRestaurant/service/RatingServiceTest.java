@@ -2,7 +2,6 @@ package ru.grig.ratingRestaurant.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.test.context.ContextConfiguration;
@@ -26,11 +25,6 @@ import static ru.grig.ratingRestaurant.RatingTestData.*;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class RatingServiceTest {
-    static {
-        // Only for postgres driver logging
-        // It uses java.util.logging and logged via jul-to-slf4j bridge
-        SLF4JBridgeHandler.install();
-    }
 
     @Autowired
     RatingService service;
@@ -39,18 +33,18 @@ public class RatingServiceTest {
 
     @Test
     public void create() throws Exception{
-        Rating newReting = getNew();
-        Rating created = service.create(newReting);
+        Rating created = service.create(getNew());
         Long newId = created.getId();
+        Rating newReting = getNew();
         newReting.setId(newId);
-        assertMatch(created, newReting);
-        assertMatch(service.get(newId), newReting);
+        RATING_MATCHER.assertMatch(created, newReting);
+        RATING_MATCHER.assertMatch(service.get(newId), newReting);
     }
 
     @Test
     public void get() throws Exception {
         Rating rating = service.get(RATING_ID);
-        assertMatch(rating, RATING_1);
+        RATING_MATCHER.assertMatch(rating, RATING_1);
     }
 
     @Test
@@ -72,26 +66,26 @@ public class RatingServiceTest {
     @Test
     public void getAll() throws Exception {
         List<Rating> all = service.getAll();
-        assertMatch(all, RATING_1, RATING_2, RATING_3, RATING_4, RATING_5, RATING_6, RATING_7, RATING_8, RATING_9);
+        RATING_MATCHER.assertMatch(all, RATING_1, RATING_2, RATING_3, RATING_4, RATING_5, RATING_6, RATING_7, RATING_8, RATING_9);
     }
 
     @Test
     public void update() {
         Rating updated = getUpdate();
         service.update(updated);
-        assertMatch(service.get(RATING_ID), updated);
+        RATING_MATCHER.assertMatch(service.get(RATING_ID), getUpdate());
     }
 
     @Test
     public void getAllByDate() throws Exception {
         List<Rating> ratingList = service.getAllByDate(RATING_DATE);
-        assertMatch(ratingList, RATING_1, RATING_2, RATING_3);
+        RATING_MATCHER.assertMatch(ratingList, RATING_1, RATING_2, RATING_3);
     }
 
     @Test
     public void setByVote() throws Exception {
         service.setByVote(RATING_ID, RATING_DATE);
-        assertMatch(service.get(RATING_ID).getCountVote(), RATING_VOTE_FOR_DAY);
+        RATING_MATCHER.assertMatch(service.get(RATING_ID).getCountVote(), RATING_VOTE_FOR_DAY);
     }
 
     @Test
@@ -105,12 +99,12 @@ public class RatingServiceTest {
     @Test
     public void getRatingByRestaurant() throws Exception {
         int vote = service.getRatingByRestaurant(RATING_ID);
-        assertMatch(vote, RATING_VOTE);
+        RATING_MATCHER.assertMatch(vote, RATING_VOTE);
     }
 
     @Test
-    public void getRatingByRestaurantNoyFound() throws Exception {
-        assertThrows(NotFoundException.class, () -> service.getRatingByRestaurant(NOT_FOUNR_ID));
+    public void getRatingByRestaurantNotFound() throws Exception {
+        assertEquals(0, service.getRatingByRestaurant(NOT_FOUNR_ID));
     }
 
     @Test
@@ -121,6 +115,6 @@ public class RatingServiceTest {
         newReting.setId(newId);
         service.incrementVote(RATING_ID);
         Rating increment = DataAccessUtils.singleResult(service.getAllByDate(LocalDate.now()));
-        assertMatch(increment.getCountVote(), RATING_VOTE_INCREMENT);
+        RATING_MATCHER.assertMatch(increment.getCountVote(), RATING_VOTE_INCREMENT);
     }
 }

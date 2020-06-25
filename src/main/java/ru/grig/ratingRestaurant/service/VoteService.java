@@ -31,10 +31,9 @@ public class VoteService {
 
     public Vote create(Vote vote) {
         log.info("create user: {}", vote);
-        System.out.println("vote.time = "+vote.getVoteTime()+"   getTime = "+getTimeBefore()+"  boolean = "+vote.getVoteTime().isBefore(getTimeBefore()));
         System.out.println("vote.date = "+vote.getVoteDate()+"   Date.now = "+LocalDate.now()+"    boolean = "+vote.getVoteDate().equals(LocalDate.now()));
 //        return voteRepository.save(vote);
-        return (vote.getVoteTime().isBefore(getTimeBefore()) &&
+        return (LocalTime.now().isBefore(getTimeBefore()) &&
                 vote.getVoteDate().equals(LocalDate.now())) ?
                 voteRepository.save(vote) : null;
     }

@@ -26,11 +26,6 @@ import static ru.grig.ratingRestaurant.UserTestData.*;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class UserServiceTest {
-    static {
-        // Only for postgres driver logging
-        // It uses java.util.logging and logged via jul-to-slf4j bridge
-        SLF4JBridgeHandler.install();
-    }
 
     @Autowired
     UserService service;
@@ -40,17 +35,17 @@ public class UserServiceTest {
 
     @Test
     public void create() throws Exception {
-        User newUser = getNew();
-        User created = service.create(newUser);
+        User created = service.create(getNew());
         Long newId = created.getId();
+        User newUser = getNew();
         newUser.setId(newId);
-        assertMatch(created, newUser);
-        assertMatch(service.get(newId), newUser);
+        USER_MATCHER.assertMatch(created, newUser);
+        USER_MATCHER.assertMatch(service.get(newId), newUser);
     }
 
     @Test
     public void get() throws Exception{
-        assertMatch(service.get(USER_ID), USER_1);
+        USER_MATCHER.assertMatch(service.get(USER_ID), USER_1);
     }
 
     @Test
@@ -73,13 +68,23 @@ public class UserServiceTest {
     public void getAll() throws Exception{
         List<User> all = service.getAll();
         System.out.println("ALL: "+all);
-        assertMatch(all, USER_2, USER_1, USER_3);
+        USER_MATCHER.assertMatch(all, USER_2, USER_1, USER_3);
     }
 
     @Test
     public void update() {
         User updated = getUpdate();
         service.update(updated);
-        assertMatch(service.get(USER_ID), updated);
+        USER_MATCHER.assertMatch(service.get(USER_ID), getUpdate());
+    }
+
+    @Test
+    public void getByEmail() throws Exception {
+        USER_MATCHER.assertMatch(service.getByEmail(USER_EMAIL), USER_2);
+    }
+
+    @Test
+    public void getByEmailNotFound() throws Exception {
+        assertNull(service.getByEmail("WRONG@mail.ru"));
     }
 }

@@ -15,16 +15,18 @@ import static ru.grig.ratingRestaurant.RestaurantTestData.*;
 import static ru.grig.ratingRestaurant.UserTestData.*;
 
 public class VoteTestData {
-    public static final int START_VOTE_SEQ = 100000;
-    public static final long NOT_FOUNR_ID = 10;
-    public static final long VOTE_ID = START_VOTE_SEQ;
 
-    public static final Vote VOTE_1 = new Vote(VOTE_ID, USER_ID,  REST_ID_1+2, LocalDateTime.of(2020, Month.JUNE, 5, 10, 00));
-    public static final Vote VOTE_2 = new Vote(VOTE_ID+1, USER_ID+1, REST_ID_1+1, LocalDateTime.of(2020, Month.JUNE, 5, 10, 00));
-    public static final Vote VOTE_3 = new Vote(VOTE_ID+2, USER_ID+2, REST_ID_1, LocalDateTime.of(2020, Month.JUNE, 5, 10, 00));
+    public static TestMatcher<Vote> VOTE_MATCHER = TestMatcher.usingFieldsComparator();
+
+    public static final long NOT_FOUNR_ID = 10;
+    public static final long VOTE_ID = 100000;
+
+    public static final Vote VOTE_1 = new Vote(VOTE_ID, USER_ID,  REST_ID_1+2, LocalDate.of(2020, Month.JUNE, 5));
+    public static final Vote VOTE_2 = new Vote(VOTE_ID+1, USER_ID+1, REST_ID_1+1, LocalDate.of(2020, Month.JUNE, 5));
+    public static final Vote VOTE_3 = new Vote(VOTE_ID+2, USER_ID+2, REST_ID_1, LocalDate.of(2020, Month.JUNE, 5));
 
     public static Vote getNew() {
-        return new Vote(null, USER_ID, REST_ID_1, LocalDateTime.now());
+        return new Vote(null, USER_ID, REST_ID_1, LocalDate.now());
     }
 
     public static Vote getUpdate() {
@@ -40,16 +42,5 @@ public class VoteTestData {
         return list;
     }
 
-    public static void assertMatch(Vote actual, Vote expected) {
-        assertThat(actual).isEqualTo(expected);
-    }
-
-    public static void assertMatch(Iterable<Vote> actual, Vote... expected) {
-        assertMatch(actual, Arrays.asList(expected));
-    }
-
-    public static void assertMatch(Iterable<Vote> actual, Iterable<Vote> expected) {
-        assertThat(actual).isEqualTo(expected);
-    }
 
 }

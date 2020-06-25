@@ -19,30 +19,26 @@ public class Vote extends AbstractBaseEntity {
 
     public Vote(Long id, long idUser, long idRestaurant) {
         super(id);
-//        this.id = id;
         this.idUser = idUser;
         this.idRestaurant = idRestaurant;
-        this.voteDateTime = LocalDateTime.now();
+        this.voteDateTime = LocalDate.now().atTime(00, 00);
     }
 
     public Vote(long idUser, long idRestaurant) {
         this(null, idUser, idRestaurant);
-//        this.id = null;
-//        this.idUser = idUser;
-//        this.idRestaurant = idRestaurant;
-        this.voteDateTime = LocalDateTime.now();
+        this.voteDateTime = LocalDate.now().atTime(00, 00);
     }
 
-    public Vote(long idUser, long idRestaurant, LocalDateTime dateTime) {
+    public Vote(long idUser, long idRestaurant, LocalDate date) {
         this(null, idUser, idRestaurant);
-        this.voteDateTime = dateTime;
+        this.voteDateTime = date.atTime(00, 00);
     }
 
-    public Vote(Long id, long idUser, long idRestaurant, LocalDateTime dateTime) {
+    public Vote(Long id, long idUser, long idRestaurant, LocalDate date) {
         super(id);
         this.idUser = idUser;
         this.idRestaurant = idRestaurant;
-        this.voteDateTime = dateTime;
+        this.voteDateTime = date.atTime(00, 00);
     }
 
 
@@ -76,13 +72,18 @@ public class Vote extends AbstractBaseEntity {
         return voteDateTime;
     }
 
-    public void setVoteDateTime(LocalDateTime voteDateTime) {
-        this.voteDateTime = voteDateTime;
+    public void setVoteDateTime(LocalDate voteDate) {
+        this.voteDateTime = voteDate.atTime(00, 00);
     }
 
-    public LocalDate getVoteDate()  {   return getVoteDateTime().toLocalDate(); }
 
-    public LocalTime getVoteTime() {    return getVoteDateTime().toLocalTime(); }
+    public void setVoteDate(LocalDate voteDate) {
+        this.voteDateTime = voteDate.atTime(00, 00);
+    }
+
+    public LocalDate getVoteDate()  {   return voteDateTime.toLocalDate(); }
+
+//    public LocalTime getVoteTime() {    return getVoteDateTime().toLocalTime(); }
 
     @Override
     public String toString() {

@@ -11,9 +11,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class RatingTestData {
-    public static final int START_MENU_SEQ = 100000;
+
+    public static TestMatcher<Rating> RATING_MATCHER = TestMatcher.usingFieldsComparator();
+
     public static final long NOT_FOUNR_ID = 10;
-    public static final long RATING_ID = START_MENU_SEQ;
+    public static final long RATING_ID = 100000;
     public static final LocalDate RATING_DATE = LocalDate.of(2020, Month.MARCH, 30);
     public static final int RATING_VOTE = 27;
     public static final int RATING_VOTE_INCREMENT = 76;

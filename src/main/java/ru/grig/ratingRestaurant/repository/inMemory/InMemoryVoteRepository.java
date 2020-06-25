@@ -19,9 +19,9 @@ public class InMemoryVoteRepository extends InMemoryBaseRepository<Vote> impleme
     private Map<Long, Restaurant> repository = new ConcurrentHashMap<>();
 
     {
-        save(new Vote(1, 3, LocalDateTime.of(2020, Month.JUNE, 5, 10, 00)));
-        save(new Vote(2, 2, LocalDateTime.of(2020, Month.JUNE, 5, 10, 00)));
-        save(new Vote(3, 1, LocalDateTime.of(2020, Month.JUNE, 5, 10, 00)));
+//        save(new Vote(1, 3, LocalDateTime.of(2020, Month.JUNE, 5, 10)));
+//        save(new Vote(2, 2, LocalDateTime.of(2020, Month.JUNE, 5, 10)));
+//        save(new Vote(3, 1, LocalDateTime.of(2020, Month.JUNE, 5, 10)));
     }
 
     @Override

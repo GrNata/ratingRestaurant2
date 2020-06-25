@@ -27,11 +27,6 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class VoteServiceTest {
-    static {
-        // Only for postgres driver logging
-        // It uses java.util.logging and logged via jul-to-slf4j bridge
-        SLF4JBridgeHandler.install();
-    }
 
     @Autowired
     VoteService service;
@@ -40,18 +35,18 @@ public class VoteServiceTest {
 
     @Test
     public void create() throws Exception{
-        Vote newVote = getNew();
-        Vote created = service.create(newVote);
+        Vote created = service.create(getNew());
         Long newId = created.getId();
+        Vote newVote = getNew();
         newVote.setId(newId);
-        assertMatch(created, newVote);
-        assertMatch(service.get(newId), newVote);
+        VOTE_MATCHER.assertMatch(created, newVote);
+        VOTE_MATCHER.assertMatch(service.get(newId), newVote);
     }
 
     @Test
     public void get() throws Exception{
         Vote vote = service.get(VOTE_ID);
-        assertMatch(vote, VOTE_1);
+        VOTE_MATCHER.assertMatch(vote, VOTE_1);
     }
 
     @Test
@@ -73,20 +68,20 @@ public class VoteServiceTest {
     @Test
     public void getAll() throws Exception {
         List<Vote> all = service.getAll();
-        assertMatch(all, VOTE_1, VOTE_2, VOTE_3);
+        VOTE_MATCHER.assertMatch(all, VOTE_1, VOTE_2, VOTE_3);
     }
 
     @Test
     public void update() throws Exception {
         Vote updated = getUpdate();
         service.update(updated);
-        assertMatch(service.get(VOTE_ID), updated);
+        VOTE_MATCHER.assertMatch(service.get(VOTE_ID), getUpdate());
     }
 
     @Test
     public void getByUser() {
         List<Vote> getByUsered = getByUserTestData();
         SecurityUtil.setAuthUserId(USER_ID);
-        assertMatch(getByUsered, service.getByUser(VOTE_1));
+        VOTE_MATCHER.assertMatch(getByUsered, service.getByUser(VOTE_1));
     }
 }

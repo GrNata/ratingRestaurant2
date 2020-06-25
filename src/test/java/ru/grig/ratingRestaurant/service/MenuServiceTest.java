@@ -27,12 +27,6 @@ import static org.junit.Assert.*;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MenuServiceTest {
 
-    static {
-        // Only for postgres driver logging
-        // It uses java.util.logging and logged via jul-to-slf4j bridge
-        SLF4JBridgeHandler.install();
-    }
-
     @Autowired
     MenuService service;
     @Autowired
@@ -40,18 +34,18 @@ public class MenuServiceTest {
 
     @Test
     public void create() throws Exception {
-        Menu newMenu = getNew();
-        Menu created = service.create(newMenu);
+        Menu created = service.create(getNew());
         Long newId = created.getId();
+        Menu newMenu = getNew();
         newMenu.setId(newId);
-        assertMatch(created, newMenu);
-        assertMatch(service.get(newId), newMenu);
+        MENU_MATCHER.assertMatch(created, newMenu);
+        MENU_MATCHER.assertMatch(service.get(newId), newMenu);
     }
 
     @Test
     public void get() throws Exception {
         Menu menu = service.get(MENU_ID);
-        assertMatch(menu, MENU_1_1);
+        MENU_MATCHER.assertMatch(menu, MENU_1_1);
     }
 
     @Test
@@ -73,19 +67,19 @@ public class MenuServiceTest {
     @Test
     public void getAll() {
         List<Menu> all = service.getAll();
-        assertMatch(all, MENU_1_1, MENU_1_2, MENU_1_3, MENU_2_1, MENU_2_2, MENU_2_3, MENU_3_1, MENU_3_2, MENU_3_3);
+        MENU_MATCHER.assertMatch(all, MENU_1_1, MENU_1_2, MENU_1_3, MENU_2_1, MENU_2_2, MENU_2_3, MENU_3_1, MENU_3_2, MENU_3_3);
     }
 
     @Test
     public void update() {
         Menu updated = getUpdated();
         service.update(updated);
-        assertMatch(service.get(MENU_ID), updated);
+        MENU_MATCHER.assertMatch(service.get(MENU_ID), getUpdated());
     }
 
     @Test
     public void getAllByRestaurant() {
         List<Menu> all = service.getAllByRestaurant(REST_ID_1);
-        assertMatch(all, MENU_1_1, MENU_1_2, MENU_1_3);
+        MENU_MATCHER.assertMatch(all, MENU_1_1, MENU_1_2, MENU_1_3);
     }
 }
