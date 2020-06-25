@@ -49,7 +49,7 @@ CREATE TABLE restaurants
 CREATE TABLE menu
 (
     id              INTEGER PRIMARY KEY DEFAULT nextval('menu_seq'),
-    idRestaurant    INTEGER REFERENCES restaurants (id) ON DELETE CASCADE,
+    id_restaurant    INTEGER REFERENCES restaurants (id) ON DELETE CASCADE,
     dishes          VARCHAR             NOT NULL,
     price           INTEGER             NOT NULL
 --     FOREIGN KEY (idRestaurant) REFERENCES restaurants (id) ON DELETE CASCADE

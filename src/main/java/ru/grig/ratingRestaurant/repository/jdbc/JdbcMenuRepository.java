@@ -32,39 +32,37 @@ public class JdbcMenuRepository implements MenuRepository {
     }
 
     @Override
-    public Menu save(Menu menu) {
+    public Menu save(Menu menu, long restId) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", menu.getId())
-                .addValue("idrestaurant", menu.getIdRestaurant())
                 .addValue("dishes", menu.getDishes())
-                .addValue("price", menu.getPrice());
+                .addValue("price", menu.getPrice())
+                .addValue("id_restaurant", restId);
         if (menu.isNew()) {
             Number newKey = insertMenu.executeAndReturnKey(map);
             menu.setId(newKey.longValue());
         } else
             if (namedParameterJdbcTemplate.update(
                     "UPDATE menu SET " +
-                            "idrestaurant=:idrestaurant, " +
+//                            "idrestaurant=:idrestaurant, " +
                             "dishes=:dishes, " +
-                            "price=:price WHERE id=:id", map) == 0) {
+                            "price=:price WHERE id=:id AND id_restaurant=:id_restaurant", map) == 0) {
                 return null;
             }
         return menu;
     }
 
     @Override
-    public Menu get(long id) {
+    public Menu get(long id, long restId) {
         List<Menu> menuList = jdbcTemplate.query(
-          "SELECT * FROM menu WHERE id=?", ROW_MAPPER, id
-        );
+          "SELECT * FROM menu WHERE id=? AND id_restaurant=?", ROW_MAPPER, id, restId);
         return DataAccessUtils.singleResult(menuList);
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(long id, long restId) {
         return jdbcTemplate.update(
-                "DELETE FROM menu WHERE id=?", id
-        ) != 0;
+                "DELETE FROM menu WHERE id=? AND id_restaurant=?", id, restId) != 0;
     }
 
     @Override
@@ -74,6 +72,6 @@ public class JdbcMenuRepository implements MenuRepository {
 
     @Override
     public List<Menu> getAllByRestaurant(long idRest) {
-        return jdbcTemplate.query("SELECT * FROM  menu WHERE idrestaurant=?", ROW_MAPPER, idRest);
+        return jdbcTemplate.query("SELECT * FROM  menu WHERE id_restaurant=?", ROW_MAPPER, idRest);
     }
 }

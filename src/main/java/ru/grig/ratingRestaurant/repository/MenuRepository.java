@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface MenuRepository {
 
-    Menu save(Menu menu);
+    Menu save(Menu menu, long restId);
 
-    Menu get(long id);
+    Menu get(long id, long restId);
 
-    boolean delete(long id);
+    boolean delete(long id, long restId);
 
     List<Menu> getAll();
 
-    List<Menu> getAllByRestaurant(long id);
+    List<Menu> getAllByRestaurant(long restId);
 }

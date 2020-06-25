@@ -19,33 +19,29 @@ public class MenuService {
         this.menuRepository = menuRepository;
     }
 
-    public Menu create(Menu menu) {
-        return menuRepository.save(menu);
+    public Menu create(Menu menu, long restId) {
+        return menuRepository.save(menu, restId);
     }
 
-    public Menu get(long id) {
-        return checkNotFoundWithId(menuRepository.get(id), id);
+    public Menu get(long id, long restId) {
+        return checkNotFoundWithId(menuRepository.get(id, restId), id);
     }
 
-    public void delete(long id) {
-        checkNotFoundWithId(menuRepository.delete(id), id);
+    public void delete(long id, long restId) {
+        checkNotFoundWithId(menuRepository.delete(id, restId), id);
     }
 
     public List<Menu> getAll() {
         return menuRepository.getAll();
     }
 
-    public void update(Menu menu) {
-        checkNotFoundWithId(menuRepository.save(menu), menu.getId());
+    public void update(Menu menu, long restId) {
+        checkNotFoundWithId(menuRepository.save(menu, restId), menu.getId());
     }
 
     public List<Menu> getAllByRestaurant(long idRestaurant) {
-        return menuRepository.getAllByRestaurant(idRestaurant);
-//        List<Menu> menus = new ArrayList<>();
-//        for (Menu menu : getAll()) {
-//            if (menu.getIdRestaurant() == idRestaurant)
-//                menus.add(menu);
-//        }
-//        return menus;
+        List<Menu> menus = menuRepository.getAllByRestaurant(idRestaurant);
+        return menus.isEmpty() ? null : menus;
+
     }
 }

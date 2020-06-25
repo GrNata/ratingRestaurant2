@@ -15,6 +15,7 @@ public class MenuTestData {
 
     public static final long NOT_FOUNR_ID = 10;
     public static final long MENU_ID = 100000;
+    public static final long MENU_ID_REST = REST_ID_1;
 
     public static final Menu MENU_1_1 = new Menu(MENU_ID, REST_ID_1, "dish 1", 100);
     public static final Menu MENU_1_2 = new Menu(MENU_ID+1, REST_ID_1,  "dish 2", 150);

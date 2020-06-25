@@ -26,7 +26,7 @@ INSERT INTO restaurants (name, menu, rating) VALUES
     ('Burger', 3, 0),
     ('Cafe', 3, 0);
 
-INSERT INTO menu (idrestaurant, dishes, price) VALUES
+INSERT INTO menu (id_restaurant, dishes, price) VALUES
     (100000, 'dish 1', 100),
     (100000, 'dish 2', 150),
     (100000, 'dish 3', 130),

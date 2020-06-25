@@ -34,34 +34,36 @@ public class MenuServiceTest {
 
     @Test
     public void create() throws Exception {
-        Menu created = service.create(getNew());
+        Menu created = service.create(getNew(), MENU_ID_REST);
         Long newId = created.getId();
         Menu newMenu = getNew();
         newMenu.setId(newId);
         MENU_MATCHER.assertMatch(created, newMenu);
-        MENU_MATCHER.assertMatch(service.get(newId), newMenu);
+        MENU_MATCHER.assertMatch(service.get(newId, MENU_ID_REST), newMenu);
     }
 
     @Test
     public void get() throws Exception {
-        Menu menu = service.get(MENU_ID);
+        Menu menu = service.get(MENU_ID, MENU_ID_REST);
         MENU_MATCHER.assertMatch(menu, MENU_1_1);
     }
 
     @Test
     public void getNotFoundException() throws Exception {
-        assertThrows(NotFoundException.class, () -> service.get(NOT_FOUNR_ID));
+        assertThrows(NotFoundException.class, () -> service.get(NOT_FOUNR_ID, MENU_ID_REST));
+        assertThrows(NotFoundException.class, () -> service.get(MENU_ID, NOT_FOUNR_ID));
     }
 
     @Test
     public void delete() {
-        service.delete(MENU_ID);
-        assertFalse(repository.delete(MENU_ID));
+        service.delete(MENU_ID, MENU_ID_REST);
+        assertFalse(repository.delete(MENU_ID, MENU_ID_REST));
     }
 
     @Test
     public void deleteNotFound() throws Exception {
-        assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUNR_ID));
+        assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUNR_ID, MENU_ID_REST));
+        assertThrows(NotFoundException.class, () -> service.delete(MENU_ID, NOT_FOUNR_ID));
     }
 
     @Test
@@ -73,13 +75,19 @@ public class MenuServiceTest {
     @Test
     public void update() {
         Menu updated = getUpdated();
-        service.update(updated);
-        MENU_MATCHER.assertMatch(service.get(MENU_ID), getUpdated());
+        service.update(updated, MENU_ID_REST);
+        MENU_MATCHER.assertMatch(service.get(MENU_ID, MENU_ID_REST), getUpdated());
     }
 
     @Test
     public void getAllByRestaurant() {
-        List<Menu> all = service.getAllByRestaurant(REST_ID_1);
+        List<Menu> all = service.getAllByRestaurant(MENU_ID_REST);
+        System.out.println("ALL: "+all);
         MENU_MATCHER.assertMatch(all, MENU_1_1, MENU_1_2, MENU_1_3);
+    }
+
+    @Test
+    public void getAllByRestaurantNotFound() throws Exception {
+        assertNull(service.getAllByRestaurant(NOT_FOUNR_ID));
     }
 }

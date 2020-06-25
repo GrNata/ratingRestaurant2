@@ -25,9 +25,9 @@ public class MainSpring {
             System.out.println(restController.get(3));
 
             MenuRestController menuRestController = appCxt.getBean(MenuRestController.class);
-            System.out.println(menuRestController.get(2));
-            menuRestController.update(new Menu((long) 2, 3, "333-DISH", 100));
-            System.out.println(menuRestController.get(2));
+            System.out.println(menuRestController.get(2, 1));
+            menuRestController.update(new Menu((long) 2, 3, "333-DISH", 100), 2);
+            System.out.println(menuRestController.get(2, 1));
         }
     }
 }
