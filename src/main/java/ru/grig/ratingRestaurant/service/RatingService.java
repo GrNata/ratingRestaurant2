@@ -58,7 +58,7 @@ public class RatingService {
         }
         if (isRest){
             vote++;
-            ratingRepository.save(new Rating(idRestaurant, vote, date));
+            ratingRepository.save(new Rating(idRestaurant, vote, date));  //  ????
         }
     }
 

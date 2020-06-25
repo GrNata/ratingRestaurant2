@@ -1,16 +1,12 @@
 package ru.grig.ratingRestaurant.controller.web;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.grig.ratingRestaurant.controller.menu.MenuRestController;
 import ru.grig.ratingRestaurant.controller.restaurant.RestaurantRestController;
-import ru.grig.ratingRestaurant.repository.MenuRepository;
-import ru.grig.ratingRestaurant.repository.RestaurantRepository;
-import ru.grig.ratingRestaurant.repository.inMemory.InMemoryMenuRepository;
-import ru.grig.ratingRestaurant.repository.inMemory.InMemoryRestaurantRepository;
-import ru.grig.ratingRestaurant.repository.jdbc.JdbcMenuRepository;
+//import ru.grig.ratingRestaurant.inMemory.InMemoryMenuRepository;
+//import ru.grig.ratingRestaurant.inMemory.InMemoryRestaurantRepository;
 import ru.grig.ratingRestaurant.util.MenuUtil;
 
 import static org.slf4j.LoggerFactory.getLogger;

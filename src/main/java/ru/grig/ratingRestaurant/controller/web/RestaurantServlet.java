@@ -118,7 +118,7 @@ public class RestaurantServlet extends HttpServlet {
 //            System.out.println("POST but1 = "+but1 +"  voteId="+restId+"  getUserId="+authUserId());
                 Vote vote = new Vote(authUserId(), Long.parseLong(restId));
 
-                Long IdRestBefore = voteController.update(vote);
+                Long IdRestBefore = voteController.update(vote, Long.parseLong(userID));
                 if (IdRestBefore != null) {
                     ratingController.incrementVote(IdRestBefore);
                 }

@@ -37,17 +37,7 @@ INSERT INTO menu (idrestaurant, dishes, price) VALUES
     (100002, '3dish 2', 350),
     (100002, '3dish 3', 320);
 
-INSERT INTO rating (idrestaurant, countvote, datevote) VALUES
---     (12, '2020-03-30'),
---     (20, '2020-03-30'),
---     (8, '2020-03-30'),
---     (10, '2020-05-10'),
---     (15, '2020-05-10'),
---     (250, '2020-05-10'),
---     (5, '2020-06-05'),
---     (22, '2020-06-05'),
---     (3, '2020-06-05');
-
+INSERT INTO rating (id_restaurant, count_vote, date_vote) VALUES
     (100000, 12, '2020-03-30'),
     (100001, 20, '2020-03-30'),
     (100002, 8, '2020-03-30'),
@@ -58,7 +48,7 @@ INSERT INTO rating (idrestaurant, countvote, datevote) VALUES
     (100001, 22, '2020-06-05'),
     (100002, 3, '2020-06-05');
 
-INSERT INTO vote (iduser, idrestaurant, votedatetime) VALUES
+INSERT INTO vote (id_user, id_restaurant, vote_date_time) VALUES
     (100000, 100002, '2020-06-05'),
     (100001, 100001, '2020-06-05'),
     (100002, 100000, '2020-06-05');

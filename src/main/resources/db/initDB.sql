@@ -58,18 +58,19 @@ CREATE TABLE menu
 CREATE TABLE rating
 (
     id              INTEGER PRIMARY KEY DEFAULT nextval('rating_seq'),
-    idRestaurant    INTEGER REFERENCES restaurants (id) ON DELETE CASCADE,
-    countVote       INTEGER,
-    dateVote        TIMESTAMP           NOT NULL
---     FOREIGN KEY (idRestaurant) REFERENCES restaurants (id) ON DELETE CASCADE
+--     idRestaurant    INTEGER REFERENCES restaurants (id) ON DELETE CASCADE,
+    id_restaurant   INTEGER             NOT NULL,
+    count_vote       INTEGER,
+    date_vote        TIMESTAMP           NOT NULL,
+    FOREIGN KEY (id_restaurant) REFERENCES restaurants (id) ON DELETE CASCADE
 );
 
 CREATE TABLE vote
 (
     id              INTEGER PRIMARY KEY DEFAULT nextval('vote_seq'),
-    idUser          INTEGER REFERENCES users (id) ON DELETE CASCADE,
-    idRestaurant    INTEGER REFERENCES restaurants (id) ON DELETE CASCADE,
-    voteDateTime    TIMESTAMP           NOT NULL
+    id_user          INTEGER REFERENCES users (id) ON DELETE CASCADE,
+    id_restaurant    INTEGER REFERENCES restaurants (id) ON DELETE CASCADE,
+    vote_date_time    TIMESTAMP           NOT NULL
 --     FOREIGN KEY (idUser) REFERENCES users (id) ON DELETE CASCADE,
 --     FOREIGN KEY (idRestaurant) REFERENCES restaurants (id) ON DELETE CASCADE
 );

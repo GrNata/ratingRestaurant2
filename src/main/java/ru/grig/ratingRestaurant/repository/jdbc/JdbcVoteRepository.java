@@ -34,21 +34,20 @@ public class JdbcVoteRepository implements VoteRepository {
     }
 
     @Override
-    public Vote save(Vote vote) {
+    public Vote save(Vote vote, long userId) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", vote.getId())
-                .addValue("iduser", vote.getIdUser())
-                .addValue("idrestaurant", vote.getIdRestaurant())
-                .addValue("votedatetime", vote.getVoteDate());
+                .addValue("id_restaurant", vote.getIdRestaurant())
+                .addValue("vote_date_time", vote.getVoteDate())
+                .addValue("id_user", userId);
         if (vote.isNew()) {
             Number newKey = insertVote.executeAndReturnKey(map);
             vote.setId(newKey.longValue());
         } else
             if (namedParameterJdbcTemplate.update(
                     "UPDATE vote SET " +
-                            "iduser=:iduser, " +
-                            "idrestaurant=:idrestaurant, " +
-                            "votedatetime=:votedatetime WHERE id=:id", map
+                            "id_restaurant=:id_restaurant, " +
+                            "vote_date_time=:vote_date_time WHERE id=:id AND id_user=:id_user", map
             )
              == 0) {
                 return null;
@@ -57,24 +56,26 @@ public class JdbcVoteRepository implements VoteRepository {
     }
 
     @Override
-    public Vote get(long id) {
+    public Vote get(long id, long userId) {
         List<Vote> voteList = jdbcTemplate.query(
-                "SELECT * FROM vote WHERE id=?", ROW_MAPPER, id
-        );
+                "SELECT * FROM vote WHERE id=? AND id_user=?", ROW_MAPPER, id, userId);
         return DataAccessUtils.singleResult(voteList);
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(long id, long userId) {
         return jdbcTemplate.update(
-                "DELETE FROM vote WHERE id=?", id
-        ) != 0;
+                "DELETE FROM vote WHERE id=? AND  id_user=?", id, userId) != 0;
     }
 
     @Override
     public List<Vote> getAll() {
         return jdbcTemplate.query(
-                "SELECT * FROM vote", ROW_MAPPER
-        );
+                "SELECT * FROM vote", ROW_MAPPER);
+    }
+
+    @Override
+    public List<Vote> getAllByRest(long userId) {
+        return jdbcTemplate.query("SELECT * FROM vote WHERE id_user=?", ROW_MAPPER, userId);
     }
 }

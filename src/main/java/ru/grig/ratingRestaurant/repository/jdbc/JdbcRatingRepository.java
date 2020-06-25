@@ -35,17 +35,18 @@ public class JdbcRatingRepository implements RatingRepository {
     public Rating save(Rating rating) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", rating.getId())
-                .addValue("idrestaurant", rating.getIdRestaurant())
-                .addValue("countvote", rating.getCountVote())
-                .addValue("datevote", rating.getDateVote());
+                .addValue("id_restaurant", rating.getIdRestaurant())
+                .addValue("count_vote", rating.getCountVote())
+                .addValue("date_vote", rating.getDateVote());
+//                .addValue("id_restaurant", rating.getIdRestaurant());
         if (rating.isNew()) {
             Number newId = insertRating.executeAndReturnKey(map);
             rating.setId(newId.longValue());
         } else
             if (namedParameterJdbcTemplate.update("UPDATE rating SET " +
-                    "idrestaurant=:idrestaurant, " +
-                    "countvote=:countvote, " +
-                    "datevote=:datevote WHERE id=:id", map)
+                    "id_restaurant=:id_restaurant, " +
+                    "count_vote=:count_vote, " +
+                    "date_vote=:date_vote WHERE id=:id", map)
             == 0) {
                 return null;
             }

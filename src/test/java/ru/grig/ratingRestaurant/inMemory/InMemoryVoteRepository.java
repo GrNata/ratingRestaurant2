@@ -1,21 +1,18 @@
-package ru.grig.ratingRestaurant.repository.inMemory;
+package ru.grig.ratingRestaurant.inMemory;
 
 import org.springframework.stereotype.Repository;
-import ru.grig.ratingRestaurant.model.AbstractBaseEntity;
 import ru.grig.ratingRestaurant.model.Restaurant;
 import ru.grig.ratingRestaurant.model.Vote;
 import ru.grig.ratingRestaurant.repository.VoteRepository;
 
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-@Repository
-public class InMemoryVoteRepository extends InMemoryBaseRepository<Vote> implements VoteRepository {
+//@Repository
+public class InMemoryVoteRepository  {
+//public class InMemoryVoteRepository extends InMemoryBaseRepository<Vote> implements VoteRepository {
     private Map<Long, Restaurant> repository = new ConcurrentHashMap<>();
 
     {
@@ -24,11 +21,11 @@ public class InMemoryVoteRepository extends InMemoryBaseRepository<Vote> impleme
 //        save(new Vote(3, 1, LocalDateTime.of(2020, Month.JUNE, 5, 10)));
     }
 
-    @Override
-    public List<Vote> getAll() {
-        return getCollection().stream()
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<Vote> getAll() {
+//        return getCollection().stream()
+//                .collect(Collectors.toList());
+//    }
 
     //    @Override
 //    public Vote save(Vote vote) {

@@ -21,34 +21,37 @@ public class VoteRestController {
     @Autowired
     VoteService voteService;
 
-    public Vote get(long id) {
-        return  voteService.get(id);
+    public Vote get(long id, long userId) {
+        return  voteService.get(id, userId);
     }
 
-    public void delete(long id) {
-        voteService.delete(id);
+    public void delete(long id, long userId) {
+        voteService.delete(id, userId);
     }
 
     public List<Vote> getAll(){
         return voteService.getAll();
     }
+    public List<Vote> getAllByUser(long userId){
+        return voteService.getAllByUser(userId);
+    }
 
-    public Vote create(Vote vote) {
+    public Vote create(Vote vote, long userId) {
         checkNew(vote);
         log.info("vote {}", vote);
-        return voteService.create(vote);
+        return voteService.create(vote, userId);
 //        return (vote.getVoteTime().isAfter(LocalTime.of(11, 00)) &&
 //                vote.getVoteDate().equals(LocalDate.now())) ?
 //                voteService.create(vote) : null;
     }
 
-    public Long update(Vote vote) {
+    public Long update(Vote vote, long userId) {
 //        if(vote.getVoteTime().isAfter(getTimeBefore()) &&
 //                vote.getVoteDate().equals(LocalDate.now())) {
 //            voteService.update(vote);
 //            return true;
 //        }
-        return voteService.update(vote);
+        return voteService.update(vote, userId);
     }
 
 

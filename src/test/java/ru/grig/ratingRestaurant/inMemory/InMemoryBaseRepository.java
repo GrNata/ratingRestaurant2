@@ -1,4 +1,4 @@
-package ru.grig.ratingRestaurant.repository.inMemory;
+package ru.grig.ratingRestaurant.inMemory;
 
 import ru.grig.ratingRestaurant.model.AbstractBaseEntity;
 
@@ -9,10 +9,11 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class InMemoryBaseRepository<T extends AbstractBaseEntity> {
     private AtomicLong counter = new AtomicLong(0);
+    private long idRest = 1;
 
     private Map<Long, T> mapEntry = new ConcurrentHashMap<>();
 
-    public T save(T entry){
+    public T save(T entry, long idRest){
         if (entry.isNew()){
             entry.setId(counter.incrementAndGet());
         }

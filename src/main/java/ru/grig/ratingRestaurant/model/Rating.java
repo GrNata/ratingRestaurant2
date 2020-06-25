@@ -14,21 +14,16 @@ public class Rating extends AbstractBaseEntity {
     public Rating(Rating r) {
         this(r.getId(), r.getIdRestaurant(), r.getCountVote(), r.getDateVote());
     }
-//    public Rating(Rating r) {
-//        this(r.getIdRestaurant(), r.getCountVote(), r.getDateVote());
+//    public Rating(int countVote, LocalDate dateVote) {
+//        this(null, countVote, dateVote);
 //    }
 
     public Rating(long idRestaurant, int countVote, LocalDate dateVote) {
-//        this(idRestaurant, countVote, dateVote);
         this(null, idRestaurant, countVote, dateVote);
-//        this.idRestaurant = idRestaurant;
-//        this.countVote = countVote;
-//        this.dateVote = dateVote;
     }
 
     public Rating(Long id, long idRestaurant, int countVote, LocalDate dateVote) {
         super(id);
-//        this.id = id;
         this.idRestaurant = idRestaurant;
         this.countVote = countVote;
         this.dateVote = dateVote;
@@ -38,17 +33,17 @@ public class Rating extends AbstractBaseEntity {
 //        return idRestaurant != null && dateVote;
 //    }
 
-    public boolean isNewDate() {
-        return dateVote == null;
-    }
+//    public boolean isNewDate() {
+//        return dateVote == null;
+//    }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     public long getIdRestaurant() {
         return idRestaurant;

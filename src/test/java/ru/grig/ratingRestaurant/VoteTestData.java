@@ -20,6 +20,7 @@ public class VoteTestData {
 
     public static final long NOT_FOUNR_ID = 10;
     public static final long VOTE_ID = 100000;
+    public static final long USER_ID_REST = REST_ID_1;
 
     public static final Vote VOTE_1 = new Vote(VOTE_ID, USER_ID,  REST_ID_1+2, LocalDate.of(2020, Month.JUNE, 5));
     public static final Vote VOTE_2 = new Vote(VOTE_ID+1, USER_ID+1, REST_ID_1+1, LocalDate.of(2020, Month.JUNE, 5));
@@ -32,7 +33,7 @@ public class VoteTestData {
     public static Vote getUpdate() {
         Vote update = new Vote(VOTE_1);
         update.setIdRestaurant(REST_ID_1);
-        update.setIdUser(USER_ID+1);
+//        update.setIdUser(USER_ID);
         return update;
     }
 

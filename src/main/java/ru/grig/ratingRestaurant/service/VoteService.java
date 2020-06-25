@@ -29,58 +29,66 @@ public class VoteService {
         this.voteRepository = voteRepository;
     }
 
-    public Vote create(Vote vote) {
+    public Vote create(Vote vote, long userId) {
         log.info("create user: {}", vote);
         System.out.println("vote.date = "+vote.getVoteDate()+"   Date.now = "+LocalDate.now()+"    boolean = "+vote.getVoteDate().equals(LocalDate.now()));
 //        return voteRepository.save(vote);
         return (LocalTime.now().isBefore(getTimeBefore()) &&
                 vote.getVoteDate().equals(LocalDate.now())) ?
-                voteRepository.save(vote) : null;
+                voteRepository.save(vote, userId) : null;
     }
 
-    public Vote get(long id) {
-        return checkNotFoundWithId(voteRepository.get(id), id);
+    public Vote get(long id, long userId) {
+        return checkNotFoundWithId(voteRepository.get(id, userId), id);
     }
 
-    public void delete(long id) {
-        checkNotFoundWithId(voteRepository.delete(id), id);
+    public void delete(long id, long userId) {
+        checkNotFoundWithId(voteRepository.delete(id, userId), id);
     }
 
     public List<Vote> getAll(){
         return voteRepository.getAll();
     }
 
-    public Long update(Vote vote) {
+    public List<Vote> getAllByUser(long userId) {
+        List<Vote> votes = voteRepository.getAllByRest(userId);
+        return votes.isEmpty() ? null : votes ; }
+
+
+    public Long update(Vote vote, long userId) {
         Long idRest = null;
 //        if (LocalTime.now().isBefore(getTimeBefore())) {
-            Vote voteGet = getByUserIdAndDateNow();
+//            Vote voteGet = getByUserIdAndDateNow();
+            Vote voteGet = getByDateNow(userId);
 //            System.out.println("VoreService update / getByUserIdAndDateNow - " + voteGet);
             if (voteGet != null) {
                 idRest = voteGet.getIdRestaurant();
                 vote.setId(voteGet.getId());
             }
-            voteRepository.save(vote);
+            voteRepository.save(vote, userId);
 //        }
         return idRest;
 //        checkNotFoundWithId(voteRepository.save(vote), vote.getId());
     }
 
-    public List<Vote> getByUser(Vote vote) {
-        List<Vote> voteList = new ArrayList<>();
-        List<Vote> votes = voteRepository.getAll();
-        for (Vote v : votes){
-            if (v.getIdUser() == authUserId()){
-                voteList.add(v);
-            }
-        }
-        return voteList;
-    }
+//    public List<Vote> getByUser(Vote vote) {
+//        List<Vote> voteList = new ArrayList<>();
+//        List<Vote> votes = voteRepository.getAll();
+//        for (Vote v : votes){
+//            if (v.getIdUser() == authUserId()){
+//                voteList.add(v);
+//            }
+//        }
+//        return voteList;
+//    }
 
-    private Vote getByUserIdAndDateNow() {
-        List<Vote> voteList = getAll();
+    private Vote getByDateNow(long userId) {
+//    private Vote getByUserIdAndDateNow() {
+        List<Vote> voteList = getAllByUser(userId);
         for (Vote vote : voteList){
 //            System.out.println("VOTE getDate = "+vote.getVoteDate()+"  date now = "+LocalDate.now());
-            if (vote.getIdUser() == authUserId() && vote.getVoteDate().equals(LocalDate.now())) {
+//            if (vote.getIdUser() == authUserId() && vote.getVoteDate().equals(LocalDate.now())) {
+            if (vote.getVoteDate().equals(LocalDate.now())) {
                 return vote;
             }
         }

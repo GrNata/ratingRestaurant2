@@ -35,10 +35,10 @@ public class RatingServiceTest {
     public void create() throws Exception{
         Rating created = service.create(getNew());
         Long newId = created.getId();
-        Rating newReting = getNew();
-        newReting.setId(newId);
-        RATING_MATCHER.assertMatch(created, newReting);
-        RATING_MATCHER.assertMatch(service.get(newId), newReting);
+        Rating newRating = getNew();
+        newRating.setId(newId);
+        RATING_MATCHER.assertMatch(created, newRating);
+        RATING_MATCHER.assertMatch(service.get(newId), newRating);
     }
 
     @Test
@@ -60,6 +60,7 @@ public class RatingServiceTest {
 
     @Test
     public void deleteNotFound() throws Exception {
+        assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUNR_ID));
         assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUNR_ID));
     }
 
