@@ -22,12 +22,12 @@ public class RestaurantRestController {
         this.restaurantService = restaurantService;
     }
 
-    public Restaurant get(long id) {
+    public Restaurant get(int id) {
         log.info("get id {}", id);
         return restaurantService.get(id);
     }
 
-    public void delete(long id) {
+    public void delete(int id) {
         log.info("delete id {}", id);
         restaurantService.delete(id);
     }

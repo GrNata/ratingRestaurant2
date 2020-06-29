@@ -11,14 +11,19 @@ public class RestaurantUtil {
 
     public static List<RestaurantWithRating> getRestaurantByRating(List<Restaurant> restaurants, List<Rating> ratings) {
         List<RestaurantWithRating> restaurantWithRatings = new ArrayList<>();
-        Map<Long, Integer> map = new HashMap<>();   //  Long - restaurant id, Integer -sum of vote
+        Map<Integer, Integer> map = new HashMap<>();   //  Long - restaurant id, Integer -sum of vote
         for (Rating rat : ratings) {
-            if (map.get(rat.getIdRestaurant()) == null) {
-                map.put(rat.getIdRestaurant(), rat.getCountVote());
+//            if (map.get(rat.getIdRestaurant()) == null) {
+            if (map.get(rat.getRestaurant().getId()) == null) {
+//                map.put(rat.getIdRestaurant(), rat.getCountVote());
+                map.put(rat.getRestaurant().getId(), rat.getCountVote());
             }
-            if (map.get(rat.getIdRestaurant()) != null) {
-                int vote = map.get(rat.getIdRestaurant()) + rat.getCountVote();
-                map.put(rat.getIdRestaurant(), vote);
+//            if (map.get(rat.getIdRestaurant()) != null) {
+            if (map.get(rat.getRestaurant().getId()) != null) {
+//                int vote = map.get(rat.getIdRestaurant()) + rat.getCountVote();
+                int vote = map.get(rat.getRestaurant().getId()) + rat.getCountVote();
+//                map.put(rat.getIdRestaurant(), vote);
+                map.put(rat.getRestaurant().getId(), vote);
 
             }
         }

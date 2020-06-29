@@ -12,13 +12,13 @@ public interface RestaurantRepository {
 
     Restaurant save(Restaurant restaurant);
 
-    Restaurant get(long id);
+    Restaurant get(int id);
 
-    boolean delete(long id);
+    boolean delete(int id);
 
     List<Restaurant> getAll();
 
-    void setRatingByRestaurant(Map<Long, Integer> map, LocalTime time);     //  не используется, через доп. список каждый раз подсчет
+    void setRatingByRestaurant(Map<Integer, Integer> map, LocalTime time);     //  не используется, через доп. список каждый раз подсчет
 
 //    void addRatingByRestaurant(long id);
 }

@@ -32,7 +32,7 @@ public class JdbcMenuRepository implements MenuRepository {
     }
 
     @Override
-    public Menu save(Menu menu, long restId) {
+    public Menu save(Menu menu, int restId) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", menu.getId())
                 .addValue("dishes", menu.getDishes())
@@ -40,7 +40,7 @@ public class JdbcMenuRepository implements MenuRepository {
                 .addValue("id_restaurant", restId);
         if (menu.isNew()) {
             Number newKey = insertMenu.executeAndReturnKey(map);
-            menu.setId(newKey.longValue());
+            menu.setId(newKey.intValue());
         } else
             if (namedParameterJdbcTemplate.update(
                     "UPDATE menu SET " +
@@ -53,14 +53,14 @@ public class JdbcMenuRepository implements MenuRepository {
     }
 
     @Override
-    public Menu get(long id, long restId) {
+    public Menu get(int id, int restId) {
         List<Menu> menuList = jdbcTemplate.query(
           "SELECT * FROM menu WHERE id=? AND id_restaurant=?", ROW_MAPPER, id, restId);
         return DataAccessUtils.singleResult(menuList);
     }
 
     @Override
-    public boolean delete(long id, long restId) {
+    public boolean delete(int id, int restId) {
         return jdbcTemplate.update(
                 "DELETE FROM menu WHERE id=? AND id_restaurant=?", id, restId) != 0;
     }
@@ -71,7 +71,7 @@ public class JdbcMenuRepository implements MenuRepository {
     }
 
     @Override
-    public List<Menu> getAllByRestaurant(long idRest) {
+    public List<Menu> getAllByRestaurant(int idRest) {
         return jdbcTemplate.query("SELECT * FROM  menu WHERE id_restaurant=?", ROW_MAPPER, idRest);
     }
 }

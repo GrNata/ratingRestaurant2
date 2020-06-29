@@ -11,9 +11,9 @@ import java.util.Date;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RestaurantTestData {
-    public static final int START_REST_SEQ = 100000;
-    public static final long NOT_FOUNR_ID = 10;
-    public static final long REST_ID_1 = START_REST_SEQ;
+    public static final int START_REST_SEQ = 100003;
+    public static final int NOT_FOUNR_ID = 10;
+    public static final int REST_ID_1 = START_REST_SEQ;
 //    public static final long REST_ID_2 = START_REST_SEQ+1;
 //    public static final long REST_ID_3 = START_REST_SEQ+2;
 
@@ -22,7 +22,7 @@ public class RestaurantTestData {
     public static final Restaurant REST_3 = new Restaurant(REST_ID_1+2, "Cafe", 3, 0);
 
     public static Restaurant getNew() {
-        return new Restaurant(null, "New", 3, 0);
+        return new Restaurant(null, "New Name", 3, 0);
     }
 
     public static Restaurant getUpdated() {

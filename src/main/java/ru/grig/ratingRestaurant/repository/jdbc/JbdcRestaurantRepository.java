@@ -40,7 +40,7 @@ public class JbdcRestaurantRepository implements RestaurantRepository {
                 .addValue("rating", restaurant.getRating());
         if (restaurant.isNew()) {
             Number newKey = insertRestaurant.executeAndReturnKey(map);
-            restaurant.setId(newKey.longValue());
+            restaurant.setId(newKey.intValue());
         } else if (namedParameterJdbcTemplate.update(
                 "UPDATE restaurants SET name=:name, menu=:menu, rating=:rating WHERE id=:id", map) == 0) {
             return null;
@@ -49,7 +49,7 @@ public class JbdcRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
-    public Restaurant get(long id) {
+    public Restaurant get(int id) {
         List<Restaurant> restaurantList = jdbcTemplate.query(
                 "SELECT * FROM restaurants WHERE id=?", ROW_MAPPER, id
         );
@@ -57,7 +57,7 @@ public class JbdcRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(int id) {
         return jdbcTemplate.update("DELETE FROM restaurants WHERE id=?", id) != 0;
     }
 
@@ -67,7 +67,7 @@ public class JbdcRestaurantRepository implements RestaurantRepository {
     }
 
     @Override       //  не используется, через доп. список каждый раз подсчет
-    public void setRatingByRestaurant(Map<Long, Integer> map_rating, LocalTime time) {
+    public void setRatingByRestaurant(Map<Integer, Integer> map_rating, LocalTime time) {
 //        for (Map.Entry<Long, Integer> m : map_rating.entrySet()) {
 //            jdbcTemplate.update("UPDATE restaurants SET rating=:m.getValue() WHERE id=?", m.getKey());
 //        }

@@ -10,9 +10,9 @@ public interface RatingRepository {
 
     Rating save(Rating rating);
 
-    Rating get(long id);
+    Rating get(int id);
 
-    boolean delete(long id);
+    boolean delete(int id);
 
     List<Rating> getAll();
 
@@ -20,5 +20,7 @@ public interface RatingRepository {
 
 //    void setByVote(Long idRestaurant, LocalDate date);
 
-//    int getRatingByRestaurant(Long idRestaurant);
+    List<Rating> getAllByRestaurant(int idRestaurant);
+
+    Rating getByRestaurantByDate(int idRest, LocalDate date);
 }

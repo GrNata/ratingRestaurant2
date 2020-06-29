@@ -35,7 +35,7 @@ public class MenuServiceTest {
     @Test
     public void create() throws Exception {
         Menu created = service.create(getNew(), MENU_ID_REST);
-        Long newId = created.getId();
+        Integer newId = created.getId();
         Menu newMenu = getNew();
         newMenu.setId(newId);
         MENU_MATCHER.assertMatch(created, newMenu);
@@ -69,6 +69,7 @@ public class MenuServiceTest {
     @Test
     public void getAll() {
         List<Menu> all = service.getAll();
+        System.out.println("ALL: "+all);
         MENU_MATCHER.assertMatch(all, MENU_1_1, MENU_1_2, MENU_1_3, MENU_2_1, MENU_2_2, MENU_2_3, MENU_3_1, MENU_3_2, MENU_3_3);
     }
 

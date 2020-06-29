@@ -1,12 +1,21 @@
 package ru.grig.ratingRestaurant.model;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+@MappedSuperclass
 public abstract class AbstractNameEntity extends AbstractBaseEntity {
 
+    @NotBlank
+    @Size(min = 2, max = 100)
+    @Column(name = "name", nullable = false)
     protected String name;
 
     protected AbstractNameEntity() {}
 
-    protected AbstractNameEntity(Long id, String name) {
+    protected AbstractNameEntity(Integer id, String name) {
         super(id);
         this.name = name;
     }

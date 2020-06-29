@@ -36,7 +36,7 @@ public class RestaurantServiceTest {
     public void create() throws Exception {
         Restaurant newRestaurant = getNew();
         Restaurant created = restaurantService.create(newRestaurant);
-        Long newKey = created.getId();
+        Integer newKey = created.getId();
         newRestaurant.setId(newKey);
         assertMatch(created, newRestaurant);
         assertMatch(restaurantService.get(newKey), newRestaurant);
@@ -50,6 +50,7 @@ public class RestaurantServiceTest {
     }
 
     @Test
+
     public void getNotFoundException() throws Exception {
         assertThrows(NotFoundException.class, () -> restaurantService.get(NOT_FOUNR_ID));
     }
@@ -69,7 +70,6 @@ public class RestaurantServiceTest {
     @Test
     public void getAll() throws Exception {
         List<Restaurant> all = restaurantService.getAll();
-        System.out.println("ALL: "+all);
         assertMatch(all, REST_1, REST_2, REST_3);
     }
 

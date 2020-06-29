@@ -21,7 +21,7 @@ public abstract class AbstractUserController {
         return service.getAll();
     }
 
-    public User get(long id) {
+    public User get(int id) {
         log.info("controller get user by id=" + id);
         return service.get(id);
     }
@@ -32,12 +32,12 @@ public abstract class AbstractUserController {
         return service.create(user);
     }
 
-    public void delete(long id) {
+    public void delete(int id) {
         log.info("controller delete user id={}", id);
         service.delete(id);
     }
 
-    public void update(User user, long id) {
+    public void update(User user, int id) {
         log.info("controller update user: {}", user);
         assureIdConsistent(user, id);
         service.update(user);

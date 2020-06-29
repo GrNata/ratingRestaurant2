@@ -34,15 +34,16 @@ public class JdbcVoteRepository implements VoteRepository {
     }
 
     @Override
-    public Vote save(Vote vote, long userId) {
+    public Vote save(Vote vote, int userId) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", vote.getId())
                 .addValue("id_restaurant", vote.getIdRestaurant())
+//                .addValue("id_restaurant", vote.getRestaurant().getId())
                 .addValue("vote_date_time", vote.getVoteDate())
                 .addValue("id_user", userId);
         if (vote.isNew()) {
             Number newKey = insertVote.executeAndReturnKey(map);
-            vote.setId(newKey.longValue());
+            vote.setId(newKey.intValue());
         } else
             if (namedParameterJdbcTemplate.update(
                     "UPDATE vote SET " +
@@ -56,14 +57,14 @@ public class JdbcVoteRepository implements VoteRepository {
     }
 
     @Override
-    public Vote get(long id, long userId) {
+    public Vote get(int id, int userId) {
         List<Vote> voteList = jdbcTemplate.query(
                 "SELECT * FROM vote WHERE id=? AND id_user=?", ROW_MAPPER, id, userId);
         return DataAccessUtils.singleResult(voteList);
     }
 
     @Override
-    public boolean delete(long id, long userId) {
+    public boolean delete(int id, int userId) {
         return jdbcTemplate.update(
                 "DELETE FROM vote WHERE id=? AND  id_user=?", id, userId) != 0;
     }
@@ -75,7 +76,7 @@ public class JdbcVoteRepository implements VoteRepository {
     }
 
     @Override
-    public List<Vote> getAllByRest(long userId) {
+    public List<Vote> getAllByUser(int userId) {
         return jdbcTemplate.query("SELECT * FROM vote WHERE id_user=?", ROW_MAPPER, userId);
     }
 }

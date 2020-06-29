@@ -19,14 +19,15 @@ public class MainSpring {
         try (ConfigurableApplicationContext appCxt = new ClassPathXmlApplicationContext("spring/spring-app.xml")){
             System.out.println("BEAN definition name: " + Arrays.toString(appCxt.getBeanDefinitionNames()));
             AdminRestController adminRestController = appCxt.getBean(AdminRestController.class);
-            adminRestController.create(new User(null, "Roma", "roma@mail.ru", "4444", LocalDate.now(), false, Role.ROLE_USER));
+            adminRestController.create(new User(null, "Roma", "roma@mail.ru", "4444", Role.ROLE_USER));
 
             RestaurantRestController restController = appCxt.getBean(RestaurantRestController.class);
             System.out.println(restController.get(3));
 
             MenuRestController menuRestController = appCxt.getBean(MenuRestController.class);
             System.out.println(menuRestController.get(2, 1));
-            menuRestController.update(new Menu((long) 2, 3, "333-DISH", 100), 2);
+//            menuRestController.update(new Menu((long) 2, 3, "333-DISH", 100), 2);
+            menuRestController.update(new Menu((int) 2, "333-DISH", 100), 2);
             System.out.println(menuRestController.get(2, 1));
         }
     }

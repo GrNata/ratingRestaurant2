@@ -28,11 +28,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User get(long id) {
+    public User get(int id) {
         return checkNotFoundWithId(userRepository.get(id), id);
     }
 
-    public void delete(long id) {
+    public void delete(int id) {
         checkNotFoundWithId(userRepository.delete(id), id);
     }
 

@@ -1,6 +1,7 @@
 package ru.grig.ratingRestaurant.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.grig.ratingRestaurant.model.Menu;
 import ru.grig.ratingRestaurant.model.Rating;
@@ -27,11 +28,11 @@ public class RatingService {
         return ratingRepository.save(rating);
     }
 
-    public Rating get(long id) {
+    public Rating get(int id) {
         return checkNotFoundWithId(ratingRepository.get(id), id);
     }
 
-    public void delete(long id) {
+    public void delete(int id) {
         checkNotFoundWithId(ratingRepository.delete(id), id);
     }
 
@@ -44,44 +45,74 @@ public class RatingService {
         checkNotFoundWithId(ratingRepository.save(rating), rating.getId());
     }
 
-    public void setByVote(Long idRestaurant, LocalDate date) {
-        List<Rating> all = ratingRepository.getAll();
-        int vote = 0;
-        boolean isRest = true;
+    public List<Rating> getAllByRestaurant(int idRest) {
+        List<Rating> all = ratingRepository.getAllByRestaurant(idRest);
+        System.out.println("ALL GET: "+all);
+        return all;
+    }
 
-        for (Rating rating : all) {
-            if (rating.getDateVote().equals(date) && rating.getIdRestaurant() == idRestaurant) {
-                vote = rating.getCountVote();
-                vote++;
-                rating.setCountVote(vote);
-                ratingRepository.save(rating);
-                isRest = false;
-                break;
-            }
-        }
-        if (isRest){
+    public void setByVote(Integer idRestaurant, LocalDate date) {
+        Rating rating = ratingRepository.getByRestaurantByDate(idRestaurant, date);
+        if (rating != null) {
+            int vote = rating.getCountVote();
             vote++;
-            ratingRepository.save(new Rating(idRestaurant, vote, date));  //  ????
+            rating.setCountVote(vote);
+            ratingRepository.save(rating);
         }
+////        List<Rating> all = ratingRepository.getAll();
+//        List<Rating> all = getAllByRestaurant(idRestaurant);
+//
+//        System.out.println("ALL: "+all);
+//
+//        int vote = 0;
+//        boolean isRest = true;
+//
+//        for (Rating rating : all) {
+////            if (rating.getDateVote().equals(date) && rating.getIdRestaurant() == idRestaurant) {
+////            if (rating.getDateVote().equals(date) && rating.getRestaurant().getId() == idRestaurant) {
+//            if (rating.getDateVote().equals(date)) {
+//                vote = rating.getCountVote();
+//                vote++;
+//                rating.setCountVote(vote);
+//
+//                System.out.println("RATING: "+rating);
+//
+//                ratingRepository.save(rating);
+//                isRest = false;
+//                break;
+//            }
+//        }
+//        if (isRest){
+//            vote++;
+//            ratingRepository.save(new Rating(idRestaurant, vote, date));  //  ????
+//        }
+    }
+
+    public List<Rating> getAllRatingByRestaurant(int idRest) {
+        return ratingRepository.getAllByRestaurant(idRest);
     }
 
 //  Подсчет голосов у ресторана
-    public int getRatingByRestaurant(Long idRestaurant) {
-        List<Rating> all = ratingRepository.getAll();
+    public int getRatingByRestaurant(Integer idRestaurant) {
+//        List<Rating> all = ratingRepository.getAll();
+        List<Rating> all = ratingRepository.getAllByRestaurant(idRestaurant);
+        System.out.println("ALL: "+all);
         int vote = 0;
-        int voteAll = 0;
+//        int voteAll = 0;
         for (Rating rat : all) {
-            voteAll = voteAll + rat.getCountVote();
-            if (rat.getIdRestaurant() == idRestaurant){
+//            voteAll = voteAll + rat.getCountVote();
+//            if (rat.getIdRestaurant() == idRestaurant){
+//            if (rat.getRestaurant().getId() == idRestaurant){
                 vote = vote + rat.getCountVote();
-            }
+//            }
         }
         return vote;
     }
 
 //  удаление голоса добавленного в этот день
-    public void incrementVote(Long idRest){
-        Rating rating = getByIdRest(idRest);
+    public void incrementVote(Integer idRest){
+//        Rating rating = getByIdRestDataNow(idRest);
+        Rating rating = ratingRepository.getByRestaurantByDate(idRest, LocalDate.now());
         if (rating != null) {
             int vote = rating.getCountVote() - 1;
             rating.setCountVote(vote);
@@ -89,10 +120,13 @@ public class RatingService {
         }
     }
 
-    private Rating getByIdRest(long idRest) {
-        List<Rating> all = ratingRepository.getAll();
+    private Rating getByIdRestDataNow(int idRest) {
+//        List<Rating> all = ratingRepository.getAll();
+        List<Rating> all = ratingRepository.getAllByRestaurant(idRest);
         for (Rating r : all) {
-            if (r.getIdRestaurant() == idRest && r.getDateVote().equals(LocalDate.now())) {
+//            if (r.getIdRestaurant() == idRest && r.getDateVote().equals(LocalDate.now())) {
+//            if (r.getRestaurant().getId() == idRest && r.getDateVote().equals(LocalDate.now())) {
+            if (r.getDateVote().equals(LocalDate.now())) {
                 return r;
             }
         }
@@ -105,5 +139,9 @@ public class RatingService {
         return ratingList.stream()
                 .filter(r -> r.getDateVote().equals(date))
                 .collect(Collectors.toList());
+    }
+
+    public Rating getByRestaurantByDate(int idRest, LocalDate date) {
+        return ratingRepository.getByRestaurantByDate(idRest, date);
     }
 }

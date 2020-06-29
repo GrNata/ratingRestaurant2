@@ -17,13 +17,16 @@ public class MenuUtil {
         for (Menu m : menus){
             String nameRestaurant = "";
             for (Restaurant r : restaurants) {
-                if (r.getId() == m.getIdRestaurant()) {
+//                if (r.getId() == m.getIdRestaurant()) {
+//                if (r.getId() == m.getUser().getId()) {
+                if (r.getId() == m.getRestaurant().getId()) {
                     nameRestaurant = r.getName();
                     break;
                 }
             }
             menuWithRestaurants.add(new MenuWithRestaurant(
-                    m.getId(), m.getIdRestaurant(), m.getDishes(), m.getPrice(),
+//                    m.getId(), m.getIdRestaurant(), m.getDishes(), m.getPrice(),
+                    m.getId(), m.getDishes(), m.getPrice(),
                     nameRestaurant));
         }
         return menuWithRestaurants;

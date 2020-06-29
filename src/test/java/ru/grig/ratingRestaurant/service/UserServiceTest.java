@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
@@ -29,14 +30,14 @@ public class UserServiceTest {
 
     @Autowired
     UserService service;
-    @Autowired
-    UserRepository repository;
+//    @Autowired
+//    UserRepository repository;
 
 
     @Test
     public void create() throws Exception {
         User created = service.create(getNew());
-        Long newId = created.getId();
+        Integer newId = created.getId();
         User newUser = getNew();
         newUser.setId(newId);
         USER_MATCHER.assertMatch(created, newUser);
@@ -56,7 +57,8 @@ public class UserServiceTest {
     @Test
     public void delete() throws Exception {
         service.delete(USER_ID);
-        assertFalse(repository.delete(USER_ID));
+//        assertFalse(service.delete(USER_ID));
+        assertThrows(NotFoundException.class, () -> service.get(USER_ID));
     }
 
     @Test
@@ -67,7 +69,7 @@ public class UserServiceTest {
     @Test
     public void getAll() throws Exception{
         List<User> all = service.getAll();
-        System.out.println("ALL: "+all);
+//        System.out.println("ALL: "+all);
         USER_MATCHER.assertMatch(all, USER_2, USER_1, USER_3);
     }
 

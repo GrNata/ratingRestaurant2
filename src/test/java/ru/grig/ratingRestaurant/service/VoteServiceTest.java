@@ -36,7 +36,7 @@ public class VoteServiceTest {
     @Test
     public void create() throws Exception{
         Vote created = service.create(getNew(), USER_ID);
-        Long newId = created.getId();
+        Integer newId = created.getId();
         Vote newVote = getNew();
         newVote.setId(newId);
         VOTE_MATCHER.assertMatch(created, newVote);
@@ -89,6 +89,9 @@ public class VoteServiceTest {
     public void update() throws Exception {
         Vote updated = getUpdate();
         service.update(updated, USER_ID);
+        Vote vote = service.get(VOTE_ID, USER_ID);
+//        System.out.println("VOTE TEST: "+ vote.getUser()+ "  : "+vote.getRestaurant());
+//        System.out.println("VOTE 2 TEST: "+ getUpdate().getUser()+"  :"+getUpdate().getRestaurant());
         VOTE_MATCHER.assertMatch(service.get(VOTE_ID, USER_ID), getUpdate());
     }
 

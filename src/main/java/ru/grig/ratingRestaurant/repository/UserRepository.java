@@ -9,9 +9,9 @@ public interface UserRepository {
 
     User save(User user);
 
-    User get(long id);
+    User get(int id);
 
-    boolean delete(long id);
+    boolean delete(int id);
 
     List<User> getAll();
 

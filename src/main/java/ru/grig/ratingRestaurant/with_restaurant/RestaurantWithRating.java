@@ -1,25 +1,25 @@
 package ru.grig.ratingRestaurant.with_restaurant;
 
 public class RestaurantWithRating {
-    private Long id;
+    private Integer id;
     private String name;
     private int menu;
     private int rating;
 
     public RestaurantWithRating() {}
 
-    public RestaurantWithRating(Long id, String name, int menu, int rating) {
+    public RestaurantWithRating(Integer id, String name, int menu, int rating) {
         this.id = id;
         this.name = name;
         this.menu = menu;
         this.rating = rating;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

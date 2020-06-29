@@ -8,14 +8,14 @@ import java.util.List;
 
 public interface VoteRepository {
 
-    Vote save(Vote vote, long userId);
+    Vote save(Vote vote, int userId);
 
-    Vote get(long id, long userId);
+    Vote get(int id, int userId);
 
-    boolean delete(long id, long userId);
+    boolean delete(int id, int userId);
 
     List<Vote> getAll();
 
-    List<Vote> getAllByRest(long userId);
+    List<Vote> getAllByUser(int userId);
 
 }

@@ -1,17 +1,17 @@
 package ru.grig.ratingRestaurant.with_restaurant;
 
 public class MenuWithRestaurant {
-    private Long id;
-    private long idRestaurant;
+    private Integer id;
+    private int idRestaurant;
     private String dishes;
     private int price;
     private String nameRestaurant;
 
-    public MenuWithRestaurant(long idRestaurant, String dishes, int price, String nameRestaurant) {
+    public MenuWithRestaurant(int idRestaurant, String dishes, int price, String nameRestaurant) {
         this(null, idRestaurant, dishes, price, nameRestaurant);
     }
 
-    public MenuWithRestaurant(Long id, long idRestaurant, String dishes, int price, String nameRestaurant) {
+    public MenuWithRestaurant(Integer id, int idRestaurant, String dishes, int price, String nameRestaurant) {
         this.id = id;
         this.idRestaurant = idRestaurant;
         this.dishes = dishes;
@@ -19,19 +19,19 @@ public class MenuWithRestaurant {
         this.nameRestaurant = nameRestaurant;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public long getIdRestaurant() {
+    public int getIdRestaurant() {
         return idRestaurant;
     }
 
-    public void setIdRestaurant(long idRestaurant) {
+    public void setIdRestaurant(int idRestaurant) {
         this.idRestaurant = idRestaurant;
     }
 

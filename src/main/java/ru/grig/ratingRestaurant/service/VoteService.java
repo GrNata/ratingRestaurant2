@@ -30,7 +30,7 @@ public class VoteService {
         this.voteRepository = voteRepository;
     }
 
-    public Vote create(Vote vote, long userId) {
+    public Vote create(Vote vote, int userId) {
         log.info("create user: {}", vote);
         Assert.notNull(vote, "Restaurant must not be NULL");
 //        System.out.println("vote.date = "+vote.getVoteDate()+"   Date.now = "+LocalDate.now()+"    boolean = "+vote.getVoteDate().equals(LocalDate.now()));
@@ -40,11 +40,11 @@ public class VoteService {
                 voteRepository.save(vote, userId) : null;
     }
 
-    public Vote get(long id, long userId) {
+    public Vote get(int id, int userId) {
         return checkNotFoundWithId(voteRepository.get(id, userId), id);
     }
 
-    public void delete(long id, long userId) {
+    public void delete(int id, int userId) {
         checkNotFoundWithId(voteRepository.delete(id, userId), id);
     }
 
@@ -52,20 +52,21 @@ public class VoteService {
         return voteRepository.getAll();
     }
 
-    public List<Vote> getAllByUser(long userId) {
-        List<Vote> votes = voteRepository.getAllByRest(userId);
+    public List<Vote> getAllByUser(int userId) {
+        List<Vote> votes = voteRepository.getAllByUser(userId);
         return votes.isEmpty() ? null : votes ; }
 
 
-    public Long update(Vote vote, long userId) {
+    public Integer update(Vote vote, int userId) {
         Assert.notNull(vote, "Restaurant must not be NULL");
-        Long idRest = null;
+        Integer idRest = null;
 //        if (LocalTime.now().isBefore(getTimeBefore())) {
 //            Vote voteGet = getByUserIdAndDateNow();
             Vote voteGet = getByDateNow(userId);
 //            System.out.println("VoreService update / getByUserIdAndDateNow - " + voteGet);
             if (voteGet != null) {
                 idRest = voteGet.getIdRestaurant();
+//                idRest = voteGet.getRestaurant().getId();
                 vote.setId(voteGet.getId());
             }
             voteRepository.save(vote, userId);
@@ -85,7 +86,7 @@ public class VoteService {
 //        return voteList;
 //    }
 
-    private Vote getByDateNow(long userId) {
+    private Vote getByDateNow(int userId) {
 //    private Vote getByUserIdAndDateNow() {
         List<Vote> voteList = getAllByUser(userId);
         for (Vote vote : voteList){

@@ -13,10 +13,13 @@ import ru.grig.ratingRestaurant.repository.RatingRepository;
 import ru.grig.ratingRestaurant.util.exception.NotFoundException;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
 
 import static org.junit.Assert.*;
 import static ru.grig.ratingRestaurant.RatingTestData.*;
+import static ru.grig.ratingRestaurant.RatingTestData.NOT_FOUNR_ID;
+import static ru.grig.ratingRestaurant.RestaurantTestData.REST_ID_1;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
@@ -34,7 +37,7 @@ public class RatingServiceTest {
     @Test
     public void create() throws Exception{
         Rating created = service.create(getNew());
-        Long newId = created.getId();
+        Integer newId = created.getId();
         Rating newRating = getNew();
         newRating.setId(newId);
         RATING_MATCHER.assertMatch(created, newRating);
@@ -85,7 +88,8 @@ public class RatingServiceTest {
 
     @Test
     public void setByVote() throws Exception {
-        service.setByVote(RATING_ID, RATING_DATE);
+//        service.setByVote(RATING_ID, RATING_DATE);
+        service.setByVote(REST_ID_1, RATING_DATE);
         RATING_MATCHER.assertMatch(service.get(RATING_ID).getCountVote(), RATING_VOTE_FOR_DAY);
     }
 
@@ -98,8 +102,15 @@ public class RatingServiceTest {
     }
 
     @Test
+    public void getAllByRestaurant() throws Exception {
+        List<Rating> ratingList = service.getAllRatingByRestaurant(REST_ID_1);
+        RATING_MATCHER.assertMatch(ratingList, RATING_1, RATING_4, RATING_7);
+    }
+
+    @Test
     public void getRatingByRestaurant() throws Exception {
-        int vote = service.getRatingByRestaurant(RATING_ID);
+//        int vote = service.getRatingByRestaurant(RATING_ID);
+        int vote = service.getRatingByRestaurant(REST_ID_1);
         RATING_MATCHER.assertMatch(vote, RATING_VOTE);
     }
 
@@ -112,10 +123,18 @@ public class RatingServiceTest {
     public void incrementVote() {
         Rating newReting = getNewByDateToday();
         Rating created = service.create(newReting);
-        Long newId = created.getId();
+        Integer newId = created.getId();
         newReting.setId(newId);
-        service.incrementVote(RATING_ID);
+//        service.incrementVote(RATING_ID);
+        service.incrementVote(REST_ID_1);
         Rating increment = DataAccessUtils.singleResult(service.getAllByDate(LocalDate.now()));
         RATING_MATCHER.assertMatch(increment.getCountVote(), RATING_VOTE_INCREMENT);
+    }
+
+    @Test
+    public void getByRestaurantByDate() throws Exception {
+        LocalDate date = LocalDate.of(2020, Month.MARCH, 30);
+        Rating rating = service.getByRestaurantByDate(REST_ID_1, date);
+        RATING_MATCHER.assertMatch(rating, RATING_1);
     }
 }

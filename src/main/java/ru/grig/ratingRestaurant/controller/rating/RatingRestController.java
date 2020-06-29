@@ -43,17 +43,17 @@ public class RatingRestController {
 //        ratingService.update(rating);
 //    }
 
-    public void setByVote(Long idRestaurant, LocalDate date) {
+    public void setByVote(Integer idRestaurant, LocalDate date) {
         log.info("setByVote");
         ratingService.setByVote(idRestaurant, date);
     }
 
-    public int getRatingByRestaurant(Long idRestaurant) {
+    public int getRatingByRestaurant(Integer idRestaurant) {
         log.info("getRatingByRestaurant");
         return ratingService.getRatingByRestaurant(idRestaurant);
     }
 
-    public void incrementVote(Long idRest){
+    public void incrementVote(Integer idRest){
         ratingService.incrementVote(idRest);
     }
 }

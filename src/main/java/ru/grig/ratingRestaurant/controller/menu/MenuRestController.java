@@ -21,12 +21,12 @@ public class MenuRestController {
         this.menuService = menuService;
     }
 
-    public Menu get(long id, long restId) {
+    public Menu get(int id, int restId) {
 //        log.info("get id {}", id);
         return menuService.get(id, restId);
     }
 
-    public void delete(long id, long restId) {
+    public void delete(int id, int restId) {
 //        log.info("delete id {}", id);
         menuService.delete(id, restId);
     }
@@ -36,19 +36,19 @@ public class MenuRestController {
         return menuService.getAll();
     }
 
-    public Menu create(Menu menu, long restId) {
+    public Menu create(Menu menu, int restId) {
 //        log.info("create menu: {}", menu);
         checkNew(menu);
         return menuService.create(menu, restId);
     }
 
-    public  void update(Menu menu, long restId) {
+    public  void update(Menu menu, int restId) {
 //        log.info("update menu: {}", menu);
         assureIdConsistent(menu, menu.getId());
         menuService.update(menu, restId);
     }
 
-    public List<Menu> getAllByRestaurant(long idRestaurant) {
+    public List<Menu> getAllByRestaurant(int idRestaurant) {
         log.info("getAllByRestaurant id {}", idRestaurant);
         return menuService.getAllByRestaurant(idRestaurant);
     }

@@ -20,16 +20,16 @@ public class MenuService {
         this.menuRepository = menuRepository;
     }
 
-    public Menu create(Menu menu, long restId) {
+    public Menu create(Menu menu, int restId) {
         Assert.notNull(menu, "Restaurant must not be NULL");
         return menuRepository.save(menu, restId);
     }
 
-    public Menu get(long id, long restId) {
+    public Menu get(int id, int restId) {
         return checkNotFoundWithId(menuRepository.get(id, restId), id);
     }
 
-    public void delete(long id, long restId) {
+    public void delete(int id, int restId) {
         checkNotFoundWithId(menuRepository.delete(id, restId), id);
     }
 
@@ -37,12 +37,12 @@ public class MenuService {
         return menuRepository.getAll();
     }
 
-    public void update(Menu menu, long restId) {
+    public void update(Menu menu, int restId) {
         Assert.notNull(menu, "Restaurant must not be NULL");
         checkNotFoundWithId(menuRepository.save(menu, restId), menu.getId());
     }
 
-    public List<Menu> getAllByRestaurant(long idRestaurant) {
+    public List<Menu> getAllByRestaurant(int idRestaurant) {
         List<Menu> menus = menuRepository.getAllByRestaurant(idRestaurant);
         return menus.isEmpty() ? null : menus;
 

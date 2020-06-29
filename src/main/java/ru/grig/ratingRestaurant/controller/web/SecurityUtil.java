@@ -8,14 +8,14 @@ public class SecurityUtil {
     public SecurityUtil() {
     }
 
-    private static long id;
+    private static int id;
 
-    public static long authUserId() {
+    public static int authUserId() {
         return id;
     }
 
-    public static void setAuthUserId(long id){
-        long id1 = 0;
+    public static void setAuthUserId(int id){
+        int id1 = 0;
         if (id == 1)  {
             id1 = 100000;
         } else

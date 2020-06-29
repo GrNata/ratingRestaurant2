@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import ru.grig.ratingRestaurant.model.Vote;
 import ru.grig.ratingRestaurant.service.VoteService;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -21,22 +22,22 @@ public class VoteRestController {
     @Autowired
     VoteService voteService;
 
-    public Vote get(long id, long userId) {
+    public Vote get(int id, int userId) {
         return  voteService.get(id, userId);
     }
 
-    public void delete(long id, long userId) {
+    public void delete(int id, int userId) {
         voteService.delete(id, userId);
     }
 
     public List<Vote> getAll(){
         return voteService.getAll();
     }
-    public List<Vote> getAllByUser(long userId){
+    public List<Vote> getAllByUser(int userId){
         return voteService.getAllByUser(userId);
     }
 
-    public Vote create(Vote vote, long userId) {
+    public Vote create(Vote vote, int userId) {
         checkNew(vote);
         log.info("vote {}", vote);
         return voteService.create(vote, userId);
@@ -45,7 +46,7 @@ public class VoteRestController {
 //                voteService.create(vote) : null;
     }
 
-    public Long update(Vote vote, long userId) {
+    public Integer update(Vote vote, int userId) {
 //        if(vote.getVoteTime().isAfter(getTimeBefore()) &&
 //                vote.getVoteDate().equals(LocalDate.now())) {
 //            voteService.update(vote);

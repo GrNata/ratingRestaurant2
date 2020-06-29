@@ -91,7 +91,7 @@ public class RestaurantServlet extends HttpServlet {
                 break;
             case "menu" :
                 forward = MENU;
-                long idRestaurant = Long.parseLong(request.getParameter("id"));
+                int idRestaurant = Integer.parseInt(request.getParameter("id"));
 //                request.setAttribute("menus", menuController.getAllByRestaurant(idRestaurant));
                 request.setAttribute("menus", MenuUtil.getAll(restaurantController.getAll(), menuController.getAllByRestaurant(idRestaurant)));
                 break;
@@ -113,12 +113,15 @@ public class RestaurantServlet extends HttpServlet {
 
         if (restId != null && but1 != null) {
             if (LocalTime.now().isBefore(getTimeBefore())) {
-                Long RestID = Long.parseLong(restId);
+                Integer RestID = Integer.parseInt(restId);
 
 //            System.out.println("POST but1 = "+but1 +"  voteId="+restId+"  getUserId="+authUserId());
-                Vote vote = new Vote(authUserId(), Long.parseLong(restId));
+//                Vote vote = new Vote(authUserId(), Integer.parseInt(restId));
+                Vote vote = new Vote(authUserId());
+//                vote.setRestaurant(restaurantController.get(Integer.parseInt(restId)));
+                vote.setIdRestaurant(Integer.parseInt(restId));
 
-                Long IdRestBefore = voteController.update(vote, Long.parseLong(userID));
+                Integer IdRestBefore = voteController.update(vote, Integer.parseInt(userID));
                 if (IdRestBefore != null) {
                     ratingController.incrementVote(IdRestBefore);
                 }
@@ -140,7 +143,7 @@ public class RestaurantServlet extends HttpServlet {
         }
         if (userID != null) {
             log.info("POST userId {}", userID);
-                SecurityUtil.setAuthUserId(Long.parseLong(userID));
+                SecurityUtil.setAuthUserId(Integer.parseInt(userID));
                 //  проблема в RestaurantUtil.getRestaurantByRating
             request.setAttribute("rest", RestaurantUtil.getRestaurantByRating(restaurantController.getAll(), ratingController.getAll()));
             request.getRequestDispatcher(RESTAURANTS).forward(request, response);

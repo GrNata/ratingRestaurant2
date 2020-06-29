@@ -1,9 +1,33 @@
 package ru.grig.ratingRestaurant.model;
 
+import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@NamedQueries({
+        @NamedQuery(name = Restaurant.DELETE, query = "DELETE FROM Restaurant r WHERE r.id=:id"),
+        @NamedQuery(name = Restaurant.getALL, query = "SELECT r FROM Restaurant r"),
+})
+
+@Entity
+@Table(name = "restaurants", uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "name", "menu", "rating"})})
 public class Restaurant extends AbstractNameEntity{
+    public static final String DELETE = "Restaurant.delete";
+    public static final String getALL = "Restaurant.getAll";
 //    private Long id;
 //    private String name;
+    @Column(name = "menu", nullable = false)
+    @NotNull
+//    @Size(min = 2, max = 150)
     private int menu;   //  количество блюд
+
+    @Column(name = "rating", nullable = false)
+    @NotNull
     private int rating;
 
     public Restaurant(){}
@@ -16,7 +40,7 @@ public class Restaurant extends AbstractNameEntity{
         this(null, name, menu, rating);
     }
 
-    public Restaurant(Long id, String name, int menu, int rating) {
+    public Restaurant(Integer id, String name, int menu, int rating) {
         super(id, name);
         this.menu = menu;
         this.rating = rating;

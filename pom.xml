@@ -92,17 +92,17 @@
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
-<!--            уже содержит -->
+<!--            уже содержит spring-orm (подменяет) spring-context -->
 <!--            <artifactId>spring-context</artifactId>-->
             <artifactId>spring-orm</artifactId>
             <version>${spring.version}</version>
         </dependency>
         <!-- spring  -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework</groupId>-->
-<!--            <artifactId>spring-context</artifactId>-->
-<!--            <version>5.2.3.RELEASE</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
         <!--        <dependency>-->
         <!--            <groupId>org.springframework</groupId>-->
         <!--            <artifactId>spring-core</artifactId>-->
@@ -129,6 +129,8 @@
         <!--- ORM -->
         <dependency>
             <groupId>org.hibernate</groupId>
+<!--            пкализация hibernate под jpa   -->
+<!--            <artifactId>hibernate-entitymanager</artifactId>-->
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
@@ -146,12 +148,12 @@
             <scope>provided</scope>
         </dependency>
         <!--  !!!!!!!      вставила сама, для javax.persistence  !!!!!!-->
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>7.0</version>
-            <scope>provided</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>javax</groupId>-->
+<!--            <artifactId>javaee-api</artifactId>-->
+<!--            <version>7.0</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
         <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 
 

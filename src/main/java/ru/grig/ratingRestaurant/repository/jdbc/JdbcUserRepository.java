@@ -36,22 +36,22 @@ public class JdbcUserRepository implements UserRepository {
                 .addValue("name", user.getName())
                 .addValue("email", user.getEmail())
                 .addValue("password", user.getPassword())
-                .addValue("registered", user.getRegistered())
-                .addValue("enable", user.isEnable());
+                .addValue("registered", user.getRegistered());
+//                .addValue("enable", user.isEnable());
         if (user.isNew()) {
             Number newKey = insertUser.executeAndReturnKey(map);
-            user.setId(newKey.longValue());
+            user.setId(newKey.intValue());
         } else
             if (namedParameterJdbcTemplate.update(
                     "UPDATE users SET name=:name, email=:email, password=:password, " +
-                            "registered=:registered, enable=:enable WHERE id=:id", map) == 0) {
+                            "registered=:registered WHERE id=:id", map) == 0) {
                 return null;
             }
         return user;
     }
 
     @Override
-    public User get(long id) {
+    public User get(int id) {
         List<User> userList = jdbcTemplate.query(
                 "SELECT * FROM users WHERE id=?", ROW_MAPPER, id
         );
@@ -59,7 +59,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(int id) {
         return jdbcTemplate.update(
                 "DELETE FROM users WHERE id=?", id) != 0;
     }
