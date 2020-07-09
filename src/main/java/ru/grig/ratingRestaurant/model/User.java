@@ -23,8 +23,6 @@ public class User extends AbstractNameEntity {
     public static final String DELETE = "User.delete";
     public static final String BY_EMAIL = "User.byEmail";
     public static final String ALL_SORTED = "User.getAllSorted";
-//    private Long id;
-//    private String name;
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
@@ -40,9 +38,6 @@ public class User extends AbstractNameEntity {
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
     private Date registered = new Date();
-
-//    @Column(name = "enable", nullable = false)
-//    private boolean enable;
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
@@ -81,28 +76,6 @@ public class User extends AbstractNameEntity {
         this(id, name, email, password, new Date(), EnumSet.of(role, roles));
     }
 
-
-
-//    public boolean isNew() {
-//        return id == null;
-//    }
-
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
-
     public String getEmail() {
         return email;
     }
@@ -126,14 +99,6 @@ public class User extends AbstractNameEntity {
     public void setRegistered(Date registered) {
         this.registered = registered;
     }
-
-//    public boolean isEnable() {
-//        return enable;
-//    }
-//
-//    public void setEnable(boolean enable) {
-//        this.enable = enable;
-//    }
 
     public Set<Role> getRole() {
         return role;

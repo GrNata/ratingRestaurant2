@@ -22,28 +22,39 @@ public class VoteTestData {
 
     public static final int NOT_FOUNR_ID = 10;
     public static final int VOTE_ID = 100024;
+    public static final LocalDateTime DATE = LocalDateTime.of(2020, Month.JUNE, 5, 00, 00);
+    public static final Vote NEW_VOTE = new Vote(null, USER_1, REST_1);
 
-    public static final Vote VOTE_1 = new Vote(VOTE_ID, USER_ID,  REST_ID_1+2, LocalDate.of(2020, Month.JUNE, 5));
-    public static final Vote VOTE_2 = new Vote(VOTE_ID+1, USER_ID+1, REST_ID_1+1, LocalDate.of(2020, Month.JUNE, 5));
-    public static final Vote VOTE_3 = new Vote(VOTE_ID+2, USER_ID+2, REST_ID_1, LocalDate.of(2020, Month.JUNE, 5));
+//    public static final Vote VOTE_1 = new Vote(VOTE_ID, USER_ID,  REST_ID_1+2, LocalDate.of(2020, Month.JUNE, 5));
+//    public static final Vote VOTE_2 = new Vote(VOTE_ID+1, USER_ID+1, REST_ID_1+1, LocalDate.of(2020, Month.JUNE, 5));
+//    public static final Vote VOTE_3 = new Vote(VOTE_ID+2, USER_ID+2, REST_ID_1, LocalDate.of(2020, Month.JUNE, 5));
 
 
-//    public static final Vote VOTE_1 = new Vote(VOTE_ID, USER_1,  REST_3, LocalDateTime.of(2020, Month.JUNE, 5,  00, 00));
-//    public static final Vote VOTE_2 = new Vote(VOTE_ID+1, USER_2, REST_2, LocalDateTime.of(2020, Month.JUNE, 5, 00, 00));
-//    public static final Vote VOTE_3 = new Vote(VOTE_ID+2, USER_3, REST_1, LocalDateTime.of(2020, Month.JUNE, 5, 00, 00));
+    public static final Vote VOTE_1 = new Vote(VOTE_ID, USER_1,  REST_3, LocalDateTime.of(2020, Month.JUNE, 5, 00, 00));
+    public static final Vote VOTE_2 = new Vote(VOTE_ID+1, USER_2, REST_2, LocalDateTime.of(2020, Month.JUNE, 5, 00, 00));
+    public static final Vote VOTE_3 = new Vote(VOTE_ID+2, USER_3, REST_1, LocalDateTime.of(2020, Month.JUNE, 5, 00, 00));
 
     public static Vote getNew() {
-//        return new Vote(null, USER_1, REST_1, LocalDateTime.now());
-        return new Vote(null, USER_ID, REST_ID_1, LocalDate.now());
+//        return new Vote(null, USER_ID, REST_1, LocalDate.now());
+//        return new Vote(null, USER_1, REST_1, LocalDateTime.now().toLocalDate().atTime(00, 00));
+//        return new Vote(null, USER_1, REST_1);
+        return new Vote(null, REST_1);
+//        return new Vote(null, USER_ID, REST_ID_1, LocalDate.now());
     }
 
     public static Vote getUpdate() {
-//        Vote update = new Vote(VOTE_ID, USER_1,  REST_3, LocalDateTime.of(2020, Month.JUNE, 5,  00, 00));
-        Vote update = new Vote(VOTE_ID, USER_ID,  REST_ID_1+2, LocalDate.of(2020, Month.JUNE, 5));
-        update.setIdRestaurant(REST_ID_1);
-//        update.setRestaurant(REST_1);
+        Vote update = new Vote(VOTE_ID, USER_1,  REST_3, LocalDateTime.of(2020, Month.JUNE, 5, 00, 00));
+//        Vote update = new Vote(VOTE_ID, USER_ID,  REST_3, LocalDate.of(2020, Month.JUNE, 5));
+//        update.setIdRestaurant(REST_ID_1);
+        update.setRestaurant(REST_1);
 //        update.setIdUser(USER_ID);
         return update;
+    }
+
+    public static Vote getForDate() {
+//        return new Vote(VOTE_ID, USER_ID,  REST_ID_1+2, LocalDate.of(2020, Month.JUNE, 5));
+//        return new Vote(VOTE_ID, USER_ID,  REST_3, LocalDate.of(2020, Month.JUNE, 5));
+        return new Vote(VOTE_ID, USER_1,  REST_3, LocalDateTime.of(2020, Month.JUNE, 5, 00, 00));
     }
 
     public static List<Vote> getByUserTestData() {

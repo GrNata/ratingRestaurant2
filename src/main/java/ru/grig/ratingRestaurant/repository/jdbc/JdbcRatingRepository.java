@@ -12,6 +12,7 @@ import ru.grig.ratingRestaurant.model.Rating;
 import ru.grig.ratingRestaurant.repository.RatingRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -32,7 +33,7 @@ public class JdbcRatingRepository implements RatingRepository {
     }
 
     @Override
-    public Rating save(Rating rating) {
+    public Rating save(Rating rating, int idRest) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", rating.getId())
 //                .addValue("id_restaurant", rating.getIdRestaurant())
@@ -77,7 +78,12 @@ public class JdbcRatingRepository implements RatingRepository {
     }
 
     @Override
-    public Rating getByRestaurantByDate(int idRest, LocalDate date) {
+    public Rating getByRestaurantByDate(int idRest, LocalDateTime date) {
+        return null;
+    }
+
+    @Override
+    public List<Rating> getAllByDate(LocalDateTime dateTime) {
         return null;
     }
 

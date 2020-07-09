@@ -2,12 +2,13 @@ package ru.grig.ratingRestaurant.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.grig.ratingRestaurant.ActiveDbProfileResolver;
 import ru.grig.ratingRestaurant.controller.web.SecurityUtil;
 import ru.grig.ratingRestaurant.model.Vote;
 import ru.grig.ratingRestaurant.repository.VoteRepository;
@@ -26,6 +27,7 @@ import static org.junit.Assert.*;
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
 public class VoteServiceTest {
 
     @Autowired
@@ -37,10 +39,9 @@ public class VoteServiceTest {
     public void create() throws Exception{
         Vote created = service.create(getNew(), USER_ID);
         Integer newId = created.getId();
-        Vote newVote = getNew();
-        newVote.setId(newId);
-        VOTE_MATCHER.assertMatch(created, newVote);
-        VOTE_MATCHER.assertMatch(service.get(newId, USER_ID), newVote);
+        NEW_VOTE.setId(newId);
+        VOTE_MATCHER.assertMatch(created, NEW_VOTE);
+        VOTE_MATCHER.assertMatch(service.get(newId, USER_ID), NEW_VOTE);
     }
 
     @Test
@@ -90,15 +91,12 @@ public class VoteServiceTest {
         Vote updated = getUpdate();
         service.update(updated, USER_ID);
         Vote vote = service.get(VOTE_ID, USER_ID);
-//        System.out.println("VOTE TEST: "+ vote.getUser()+ "  : "+vote.getRestaurant());
-//        System.out.println("VOTE 2 TEST: "+ getUpdate().getUser()+"  :"+getUpdate().getRestaurant());
         VOTE_MATCHER.assertMatch(service.get(VOTE_ID, USER_ID), getUpdate());
     }
 
-//    @Test     //  исключен метод
-//    public void getByUser() {
-//        List<Vote> getByUsered = getByUserTestData();
-//        SecurityUtil.setAuthUserId(USER_ID, UserService);
-//        VOTE_MATCHER.assertMatch(getByUsered, service.getByUser(VOTE_1));
-//    }
+    @Test     //  исключен метод
+    public void getByDate() {
+        VOTE_MATCHER.assertMatch(service.getByDate(USER_ID, DATE), getForDate());
+    }
+
 }

@@ -3,6 +3,7 @@ package ru.grig.ratingRestaurant.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @NamedQueries({
         @NamedQuery(name = Rating.DELETE, query = "DELETE FROM Rating r where r.id=:id"),
@@ -11,6 +12,8 @@ import java.time.LocalDate;
                 "Rating r WHERE r.restaurant.id=:id_restaurant"),
         @NamedQuery(name = Rating.GET_BY_RESTAURANT_BY_DATE,
         query = "SELECT r FROM Rating r WHERE r.restaurant.id=:id_restaurant AND r.dateVote=:date_vota"),
+        @NamedQuery(name = Rating.GET_ALL_BY_DATE,
+            query = "SELECT r FROM Rating r WHERE r.dateVote=:date"),
 })
 
 @Entity
@@ -21,6 +24,7 @@ public class Rating extends AbstractBaseEntity {
     public static final String GET_ALL = "Rating.getAll";
     public static final String GET_ALL_BY_RESTAURANT = "Rating.getAllByRestaurant";
     public static final String GET_BY_RESTAURANT_BY_DATE = "Rating.getByRestaurantByDate";
+    public static final String GET_ALL_BY_DATE = "Rating.getAllByDate";
 
 //public class Rating {
 //    private Long id;
@@ -31,7 +35,7 @@ public class Rating extends AbstractBaseEntity {
 
     @Column(name = "date_vote", nullable = false)
     @NotNull
-    private LocalDate dateVote;
+    private LocalDateTime dateVote;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_restaurant", nullable = false)
@@ -57,48 +61,30 @@ public class Rating extends AbstractBaseEntity {
 //        this(null, countVote, dateVote);
 //    }
 
-    public Rating(Restaurant restaurant, int countVote, LocalDate dateVote) {
+    public Rating(Restaurant restaurant, int countVote, LocalDateTime dateVote) {
         this(null, restaurant, countVote, dateVote);
     }
 
-//    public Rating(Integer id, int idRestaurant, int countVote, LocalDate dateVote) {
-    public Rating(Integer id, int countVote, LocalDate dateVote) {
+    public Rating(int countVote, LocalDateTime dateVote) {
+        this(null, null, countVote, dateVote);
+    }
+
+
+    //    public Rating(Integer id, int idRestaurant, int countVote, LocalDate dateVote) {
+    public Rating(Integer id, int countVote, LocalDateTime dateVote) {
         super(id);
 //        this.idRestaurant = idRestaurant;
         this.countVote = countVote;
         this.dateVote = dateVote;
     }
 
-    public Rating(Integer id, Restaurant restaurant, int countVote, LocalDate dateVote) {
+    public Rating(Integer id, Restaurant restaurant, int countVote, LocalDateTime dateVote) {
         super(id);
         this.restaurant = restaurant;
         this.countVote = countVote;
         this.dateVote = dateVote;
     }
 
-//    public boolean isNew() {
-//        return idRestaurant != null && dateVote;
-//    }
-
-//    public boolean isNewDate() {
-//        return dateVote == null;
-//    }
-
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-
-//    public int getIdRestaurant() {
-//        return idRestaurant;
-//    }
-//
-//    public void setIdRestaurant(int idRestaurant) {
-//        this.idRestaurant = idRestaurant;
-//    }
 
     public int getCountVote() {
         return countVote;
@@ -108,13 +94,15 @@ public class Rating extends AbstractBaseEntity {
         this.countVote = countVote;
     }
 
-    public LocalDate getDateVote() {
+    public LocalDateTime getDateVote() {
         return dateVote;
     }
 
-    public void setDateVote(LocalDate dateVote) {
+    public void setDateVote(LocalDateTime dateVote) {
         this.dateVote = dateVote;
     }
+
+    public LocalDate getDate() {    return dateVote.toLocalDate(); }
 
     public Restaurant getRestaurant() {
         return restaurant;

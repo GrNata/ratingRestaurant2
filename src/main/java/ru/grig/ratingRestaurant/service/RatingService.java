@@ -1,5 +1,7 @@
 package ru.grig.ratingRestaurant.service;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -9,6 +11,7 @@ import ru.grig.ratingRestaurant.repository.MenuRepository;
 import ru.grig.ratingRestaurant.repository.RatingRepository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,69 +26,50 @@ public class RatingService {
         this.ratingRepository = ratingRepository;
     }
 
-    public Rating create(Rating rating) {
+    @CacheEvict(value = "rating", allEntries = true)
+    public Rating create(Rating rating, int restId) {
         Assert.notNull(rating, "Restaurant must not be NULL");
-        return ratingRepository.save(rating);
+        return ratingRepository.save(rating, restId);
     }
 
     public Rating get(int id) {
         return checkNotFoundWithId(ratingRepository.get(id), id);
     }
 
+    @CacheEvict(value = "rating", allEntries = true)
     public void delete(int id) {
         checkNotFoundWithId(ratingRepository.delete(id), id);
     }
 
+    @Cacheable("rating")
     public List<Rating> getAll() {
         return ratingRepository.getAll();
     }
 
-    public void update(Rating rating) {
+    @CacheEvict(value = "rating", allEntries = true)
+    public void update(Rating rating, int restId) {
         Assert.notNull(rating, "Restaurant must not be NULL");
-        checkNotFoundWithId(ratingRepository.save(rating), rating.getId());
+        checkNotFoundWithId(ratingRepository.save(rating, restId), rating.getId());
     }
 
     public List<Rating> getAllByRestaurant(int idRest) {
         List<Rating> all = ratingRepository.getAllByRestaurant(idRest);
-        System.out.println("ALL GET: "+all);
-        return all;
+        return all.size() == 0 ? null : all;
     }
 
-    public void setByVote(Integer idRestaurant, LocalDate date) {
+//    public void setByVote(Integer idRestaurant, LocalDate date) {
+    public void setByVote(Integer idRestaurant, LocalDateTime date) {
         Rating rating = ratingRepository.getByRestaurantByDate(idRestaurant, date);
+
         if (rating != null) {
             int vote = rating.getCountVote();
             vote++;
             rating.setCountVote(vote);
-            ratingRepository.save(rating);
+//            ratingRepository.save(rating);
+        } else {
+            rating = new Rating(1, date);
         }
-////        List<Rating> all = ratingRepository.getAll();
-//        List<Rating> all = getAllByRestaurant(idRestaurant);
-//
-//        System.out.println("ALL: "+all);
-//
-//        int vote = 0;
-//        boolean isRest = true;
-//
-//        for (Rating rating : all) {
-////            if (rating.getDateVote().equals(date) && rating.getIdRestaurant() == idRestaurant) {
-////            if (rating.getDateVote().equals(date) && rating.getRestaurant().getId() == idRestaurant) {
-//            if (rating.getDateVote().equals(date)) {
-//                vote = rating.getCountVote();
-//                vote++;
-//                rating.setCountVote(vote);
-//
-//                System.out.println("RATING: "+rating);
-//
-//                ratingRepository.save(rating);
-//                isRest = false;
-//                break;
-//            }
-//        }
-//        if (isRest){
-//            vote++;
-//            ratingRepository.save(new Rating(idRestaurant, vote, date));  //  ????
-//        }
+        ratingRepository.save(rating, idRestaurant);
     }
 
     public List<Rating> getAllRatingByRestaurant(int idRest) {
@@ -94,54 +78,40 @@ public class RatingService {
 
 //  Подсчет голосов у ресторана
     public int getRatingByRestaurant(Integer idRestaurant) {
-//        List<Rating> all = ratingRepository.getAll();
-        List<Rating> all = ratingRepository.getAllByRestaurant(idRestaurant);
-        System.out.println("ALL: "+all);
         int vote = 0;
-//        int voteAll = 0;
-        for (Rating rat : all) {
-//            voteAll = voteAll + rat.getCountVote();
-//            if (rat.getIdRestaurant() == idRestaurant){
-//            if (rat.getRestaurant().getId() == idRestaurant){
+        List<Rating> all = ratingRepository.getAllByRestaurant(idRestaurant);
+        if (all != null) {
+            for (Rating rat : all) {
                 vote = vote + rat.getCountVote();
-//            }
+            }
         }
         return vote;
     }
 
 //  удаление голоса добавленного в этот день
     public void incrementVote(Integer idRest){
-//        Rating rating = getByIdRestDataNow(idRest);
-        Rating rating = ratingRepository.getByRestaurantByDate(idRest, LocalDate.now());
+//  при неверной дате отсекам здесь
+        Rating rating = ratingRepository.getByRestaurantByDate(idRest, LocalDate.now().atTime(00, 00));
         if (rating != null) {
             int vote = rating.getCountVote() - 1;
             rating.setCountVote(vote);
-            ratingRepository.save(rating);
+            ratingRepository.save(rating, idRest);
         }
     }
 
-    private Rating getByIdRestDataNow(int idRest) {
-//        List<Rating> all = ratingRepository.getAll();
-        List<Rating> all = ratingRepository.getAllByRestaurant(idRest);
-        for (Rating r : all) {
-//            if (r.getIdRestaurant() == idRest && r.getDateVote().equals(LocalDate.now())) {
-//            if (r.getRestaurant().getId() == idRest && r.getDateVote().equals(LocalDate.now())) {
-            if (r.getDateVote().equals(LocalDate.now())) {
-                return r;
-            }
-        }
-        return null;
-    }
 
-    public List<Rating>  getAllByDate(LocalDate date) {
+//    public List<Rating>  getAllByDate(LocalDate date) {
+    public List<Rating>  getAllByDate(LocalDateTime date) {
         Assert.notNull(date, "Restaurant must not be NULL");
         List<Rating> ratingList = ratingRepository.getAll();
         return ratingList.stream()
-                .filter(r -> r.getDateVote().equals(date))
+                .filter(r -> r.getDateVote().toLocalDate().equals(date.toLocalDate()))
                 .collect(Collectors.toList());
     }
 
     public Rating getByRestaurantByDate(int idRest, LocalDate date) {
-        return ratingRepository.getByRestaurantByDate(idRest, date);
+//        return ratingRepository.getByRestaurantByDate(idRest, date.atTime(00, 00));
+        return checkNotFound(ratingRepository.getByRestaurantByDate(idRest, date.atTime(00, 00)),
+                "Restaurant with this date not found");
     }
 }

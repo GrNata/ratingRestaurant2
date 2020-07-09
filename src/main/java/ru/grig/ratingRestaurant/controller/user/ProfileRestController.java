@@ -1,6 +1,5 @@
 package ru.grig.ratingRestaurant.controller.user;
 
-import com.sun.org.apache.xerces.internal.impl.dv.xs.ListDV;
 import org.springframework.stereotype.Controller;
 import ru.grig.ratingRestaurant.model.User;
 

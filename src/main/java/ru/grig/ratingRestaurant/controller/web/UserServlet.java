@@ -3,6 +3,7 @@ package ru.grig.ratingRestaurant.controller.web;
 import org.slf4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.grig.ratingRestaurant.controller.menu.MenuRestController;
 import ru.grig.ratingRestaurant.controller.rating.RatingRestController;
 import ru.grig.ratingRestaurant.controller.restaurant.RestaurantRestController;
 import ru.grig.ratingRestaurant.controller.user.ProfileRestController;
@@ -29,14 +30,17 @@ public class UserServlet extends HttpServlet {
     private RestaurantRestController restaurantController;
     private ProfileRestController profileController;
     private RatingRestController ratingController;
+    private MenuRestController menuController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
+        springContext = new ClassPathXmlApplicationContext(
+                "spring/spring-app.xml", "spring/spring-db.xml", "spring/spring-cache.xml");
         restaurantController = springContext.getBean(RestaurantRestController.class);
         profileController = springContext.getBean(ProfileRestController.class);
         ratingController = springContext.getBean(RatingRestController.class);
+        menuController = springContext.getBean(MenuRestController.class);
 //        profileController = new InMemoryUserRepository();
     }
 

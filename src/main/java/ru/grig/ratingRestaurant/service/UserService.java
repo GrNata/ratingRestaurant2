@@ -1,13 +1,13 @@
 package ru.grig.ratingRestaurant.service;
 
-import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.grig.ratingRestaurant.model.User;
 import ru.grig.ratingRestaurant.repository.UserRepository;
-import org.springframework.util.Assert;
 
 import java.util.List;
 import static ru.grig.ratingRestaurant.util.ValidationUtil.checkNotFoundWithId;
@@ -22,6 +22,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public User create(User user) {
         log.info("create user: {}", user);
         Assert.notNull(user, "User must not be NULL");
@@ -32,14 +33,17 @@ public class UserService {
         return checkNotFoundWithId(userRepository.get(id), id);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void delete(int id) {
         checkNotFoundWithId(userRepository.delete(id), id);
     }
 
+    @Cacheable("users")
     public List<User> getAll(){
         return userRepository.getAll();
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void update(User user) {
         Assert.notNull(user, "User must not be NULL");
         checkNotFoundWithId(userRepository.save(user), user.getId());

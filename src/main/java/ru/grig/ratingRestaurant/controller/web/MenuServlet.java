@@ -26,19 +26,14 @@ public class MenuServlet extends HttpServlet {
     private ConfigurableApplicationContext springContext;
     private MenuRestController menuController;
     private RestaurantRestController restaurantController;
-//    @Autowired
-//    MenuRepository menuRepository;
-////    @Autowired
-//    RestaurantRepository restaurantRepository;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
+        springContext = new ClassPathXmlApplicationContext(
+                "spring/spring-app.xml", "spring/spring-db.xml", "spring/spring-cache.xml");
         menuController = springContext.getBean(MenuRestController.class);
         restaurantController = springContext.getBean(RestaurantRestController.class);
-        //        menuRepository = new InMemoryMenuRepository();
-//        restaurantRepository = new InMemoryRestaurantRepository();
     }
 
     @Override

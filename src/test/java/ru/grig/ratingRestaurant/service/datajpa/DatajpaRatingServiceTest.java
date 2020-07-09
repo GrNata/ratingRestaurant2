@@ -1,43 +1,72 @@
-package ru.grig.ratingRestaurant.service;
+package ru.grig.ratingRestaurant.service.datajpa;
 
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.rules.Stopwatch;
+import org.junit.runner.Description;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit4.SpringRunner;
-import ru.grig.ratingRestaurant.ActiveDbProfileResolver;
 import ru.grig.ratingRestaurant.model.Rating;
-import ru.grig.ratingRestaurant.repository.RatingRepository;
+import ru.grig.ratingRestaurant.service.AbstractServiceTest;
+import ru.grig.ratingRestaurant.service.MenuService;
+import ru.grig.ratingRestaurant.service.RatingService;
 import ru.grig.ratingRestaurant.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertThrows;
+import static org.slf4j.LoggerFactory.getLogger;
+import static ru.grig.ratingRestaurant.Profiles.*;
 import static ru.grig.ratingRestaurant.RatingTestData.*;
-import static ru.grig.ratingRestaurant.RatingTestData.NOT_FOUNR_ID;
-import static ru.grig.ratingRestaurant.RestaurantTestData.REST_1;
 import static ru.grig.ratingRestaurant.RestaurantTestData.REST_ID_1;
 
-@ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
-@RunWith(SpringRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
-public class RatingServiceTest {
+@ActiveProfiles({POSTGRES_DB, DATAJPA})
+//@ActiveProfiles({HSQL_DB, DATAJPA})
+public class DatajpaRatingServiceTest extends AbstractServiceTest {
+
+    private static final StringBuilder results = new StringBuilder();
+    private static final Logger log = getLogger("result");
+
+    @Rule
+    // http://stackoverflow.com/questions/14892125/what-is-the-best-practice-to-determine-the-execution-time-of-the-bussiness-relev
+    public final Stopwatch stopwatch = new Stopwatch() {
+        @Override
+        protected void finished(long nanos, Description description) {
+            String result = String.format("\n%-25s %7d", description.getMethodName(), TimeUnit.NANOSECONDS.toMillis(nanos));
+            results.append(result);
+            log.info(result + " ms\n");
+        }
+    };
 
     @Autowired
     RatingService service;
+
     @Autowired
-    RatingRepository repository;
+    private CacheManager cacheManager;
+
+    @Before
+    public void setUp() throws Exception {
+        cacheManager.getCache("rating").clear();
+    }
+
+    @AfterClass
+    public static void printResult() {
+        log.info("\n---------------------------------" +
+                "\nTest                 Duration, ms" +
+                "\n---------------------------------" +
+                results +
+                "\n---------------------------------");
+    }
 
     @Test
     public void create() throws Exception{
@@ -63,7 +92,8 @@ public class RatingServiceTest {
     @Test
     public void delete() throws Exception {
         service.delete(RATING_ID);
-        assertFalse(repository.delete(RATING_ID));
+//        assertFalse(repository.delete(RATING_ID));
+        assertThrows(NotFoundException.class, () -> service.get(RATING_ID));
     }
 
     @Test
@@ -78,12 +108,12 @@ public class RatingServiceTest {
         RATING_MATCHER.assertMatch(all, RATING_1, RATING_2, RATING_3, RATING_4, RATING_5, RATING_6, RATING_7, RATING_8, RATING_9);
     }
 
-//    @Test
-//    public void update() {
-//        Rating updated = getUpdate();
-//        service.update(updated, REST_ID_1);
-//        RATING_MATCHER.assertMatch(service.get(RATING_ID), getUpdate());
-//    }
+    @Test
+    public void update() {
+        Rating updated = getUpdate();
+        service.update(updated, REST_ID_1);
+        RATING_MATCHER.assertMatch(service.get(RATING_ID), getUpdate());
+    }
 
     @Test
     public void getAllByDate() throws Exception {
@@ -163,4 +193,5 @@ public class RatingServiceTest {
     public void getByRestaurantByWrongDate() throws Exception {
         assertThrows(NotFoundException.class, () -> service.getByRestaurantByDate(REST_ID_1, RATING_DATE_NOT_FOUND));
     }
+
 }

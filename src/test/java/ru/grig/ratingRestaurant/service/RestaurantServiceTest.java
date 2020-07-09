@@ -2,12 +2,15 @@ package ru.grig.ratingRestaurant.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.bridge.SLF4JBridgeHandler;
+//import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.grig.ratingRestaurant.ActiveDbProfileResolver;
 import ru.grig.ratingRestaurant.RestaurantTestData;
 import ru.grig.ratingRestaurant.model.Restaurant;
 import ru.grig.ratingRestaurant.repository.RestaurantRepository;
@@ -24,6 +27,7 @@ import static org.junit.Assert.*;
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
 public class RestaurantServiceTest {
 
     @Autowired
@@ -58,7 +62,7 @@ public class RestaurantServiceTest {
     @Test
     public void delete() throws Exception {
         restaurantService.delete(REST_ID_1);
-        System.out.println(restaurantRepository.delete(REST_ID_1));
+//        assertThrows(NotFoundException.class, () -> restaurantService.delete(REST_ID_1));
         assertFalse(restaurantRepository.delete(REST_ID_1));
     }
 

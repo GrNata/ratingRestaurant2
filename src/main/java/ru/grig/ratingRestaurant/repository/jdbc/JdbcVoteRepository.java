@@ -8,9 +8,11 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import ru.grig.ratingRestaurant.model.User;
 import ru.grig.ratingRestaurant.model.Vote;
 import ru.grig.ratingRestaurant.repository.VoteRepository;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -34,11 +36,16 @@ public class JdbcVoteRepository implements VoteRepository {
     }
 
     @Override
+    public Vote save2(Vote vote, User user) {
+        return null;
+    }
+
+    @Override
     public Vote save(Vote vote, int userId) {
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", vote.getId())
-                .addValue("id_restaurant", vote.getIdRestaurant())
-//                .addValue("id_restaurant", vote.getRestaurant().getId())
+//                .addValue("id_restaurant", vote.getIdRestaurant())
+                .addValue("id_restaurant", vote.getRestaurant().getId())
                 .addValue("vote_date_time", vote.getVoteDate())
                 .addValue("id_user", userId);
         if (vote.isNew()) {
@@ -78,5 +85,10 @@ public class JdbcVoteRepository implements VoteRepository {
     @Override
     public List<Vote> getAllByUser(int userId) {
         return jdbcTemplate.query("SELECT * FROM vote WHERE id_user=?", ROW_MAPPER, userId);
+    }
+
+    @Override
+    public Vote getByDate(int userId, LocalDate date) {
+        return null;
     }
 }

@@ -1,55 +1,59 @@
-package ru.grig.ratingRestaurant.service;
+package ru.grig.ratingRestaurant.service.datajpa;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.internal.runners.statements.ExpectException;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit4.SpringRunner;
-import ru.grig.ratingRestaurant.ActiveDbProfileResolver;
 import ru.grig.ratingRestaurant.model.Menu;
-import ru.grig.ratingRestaurant.repository.MenuRepository;
+import ru.grig.ratingRestaurant.service.AbstractServiceTest;
+import ru.grig.ratingRestaurant.service.MenuService;
+import ru.grig.ratingRestaurant.service.UserService;
 import ru.grig.ratingRestaurant.util.exception.NotFoundException;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.Assert.*;
 import static org.slf4j.LoggerFactory.getLogger;
 import static ru.grig.ratingRestaurant.MenuTestData.*;
-import static ru.grig.ratingRestaurant.RestaurantTestData.REST_ID_1;
+import static ru.grig.ratingRestaurant.MenuTestData.*;
+import static ru.grig.ratingRestaurant.Profiles.*;
 
-import static org.junit.Assert.*;
 
-@ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
-@RunWith(SpringRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
-public class MenuServiceTest {
-    private static final Logger log = getLogger("result");
+@ActiveProfiles({POSTGRES_DB, DATAJPA})
+//@ActiveProfiles({HSQL_DB, DATAJPA})
+public class DatajpaMenuServiceTest extends AbstractServiceTest {
 
     private static final StringBuilder results = new StringBuilder();
+    private static final Logger log = getLogger("result");
 
     @Rule
-    public Stopwatch stopwatch = new Stopwatch() {
+    // http://stackoverflow.com/questions/14892125/what-is-the-best-practice-to-determine-the-execution-time-of-the-bussiness-relev
+    public final Stopwatch stopwatch = new Stopwatch() {
         @Override
         protected void finished(long nanos, Description description) {
             String result = String.format("\n%-25s %7d", description.getMethodName(), TimeUnit.NANOSECONDS.toMillis(nanos));
-
             results.append(result);
             log.info(result + " ms\n");
         }
     };
+
+    @Autowired
+    MenuService service;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    @Before
+    public void setUp() throws Exception {
+        cacheManager.getCache("menu").clear();
+    }
 
     @AfterClass
     public static void printResult() {
@@ -59,11 +63,6 @@ public class MenuServiceTest {
                 results +
                 "\n---------------------------------");
     }
-
-    @Autowired
-    MenuService service;
-//    @Autowired
-//    MenuRepository repository;
 
     @Test
     public void create() throws Exception {
@@ -91,7 +90,7 @@ public class MenuServiceTest {
     public void delete() {
         service.delete(MENU_ID, MENU_ID_REST);
 //        assertFalse(repository.delete(MENU_ID, MENU_ID_REST));
-//        assertFalse(service.delete(MENU_ID, MENU_ID_REST));
+        assertThrows(NotFoundException.class, () -> service.get(MENU_ID, MENU_ID_REST));
     }
 
     @Test
@@ -127,4 +126,5 @@ public class MenuServiceTest {
     public void getAllByRestaurantNotFound() throws Exception {
         assertNull(service.getAllByRestaurant(NOT_FOUNR_ID));
     }
+
 }

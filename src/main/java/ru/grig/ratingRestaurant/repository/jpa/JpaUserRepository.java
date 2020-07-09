@@ -26,7 +26,6 @@ public class JpaUserRepository implements UserRepository {
             em.persist(user);
             return user;
         } else {
-            System.out.println("USER: "+user);
             return em.merge(user);
         }
     }

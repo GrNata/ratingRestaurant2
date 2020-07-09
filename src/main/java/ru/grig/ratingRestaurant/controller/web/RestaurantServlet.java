@@ -7,7 +7,11 @@ import ru.grig.ratingRestaurant.controller.menu.MenuRestController;
 import ru.grig.ratingRestaurant.controller.rating.RatingRestController;
 import ru.grig.ratingRestaurant.controller.restaurant.RestaurantRestController;
 import ru.grig.ratingRestaurant.controller.vote.VoteRestController;
+import ru.grig.ratingRestaurant.model.Restaurant;
+import ru.grig.ratingRestaurant.model.User;
 import ru.grig.ratingRestaurant.model.Vote;
+import ru.grig.ratingRestaurant.service.RestaurantService;
+import ru.grig.ratingRestaurant.service.UserService;
 import ru.grig.ratingRestaurant.util.MenuUtil;
 import ru.grig.ratingRestaurant.util.RestaurantUtil;
 
@@ -36,29 +40,26 @@ public class RestaurantServlet extends HttpServlet {
     private String action;
     private String forward;
 
-    private long idVote = 0;
+//    private long idVote = 0;
 
     private ConfigurableApplicationContext springContext;
     private RestaurantRestController restaurantController;
     private MenuRestController menuController;
     private RatingRestController ratingController;
     private VoteRestController voteController;
-
-//    RestaurantRepository restaurantRepository;
-//    MenuRepository menuRepository;
-//    RatingRepository ratingRepository;
+    private UserService userService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-//        restaurantRepository = new InMemoryRestaurantRepository();
-//        menuRepository = new InMemoryMenuRepository();
-//        ratingRepository = new InMemoryRatingRepository();
-        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
+        springContext = new ClassPathXmlApplicationContext(
+                "spring/spring-app.xml", "spring/spring-db.xml", "spring/spring-cache.xml");
+        System.out.println("SPRING_CONTEXT: "+springContext);
         restaurantController = springContext.getBean(RestaurantRestController.class);
         menuController = springContext.getBean(MenuRestController.class);
         ratingController = springContext.getBean(RatingRestController.class);
         voteController = springContext.getBean(VoteRestController.class);
+        userService = springContext.getBean(UserService.class);
     }
 
     @Override
@@ -72,21 +73,9 @@ public class RestaurantServlet extends HttpServlet {
         log.info("redirect to restaurants userId = {}", SecurityUtil.authUserId());
         action = request.getParameter("action");
         System.out.println("ACTION = "+action);
-//        System.out.println("ID = "+request.getParameter("value"));
-
-//        if (action == null || action.isEmpty()) action = "list";
-
-//        switch (action) {
         switch ((action == null || action.isEmpty()) ? "list" : action) {
             case "list" :
-//                Map<Long, Integer> rating = new HashMap<>();
-//                for (Rating rat : ratingRepository.getAll()) {
-//                    rating.put(rat.getIdRestaurant(), ratingRepository.getRatingByRestaurant(rat.getIdRestaurant()));
-//                }
-//                restaurantRepository.setRatingByRestaurant(rating, LocalTime.now());
-
                 forward = RESTAURANTS;
-//                request.setAttribute("rest", restaurantController.getAll());
                 request.setAttribute("rest", RestaurantUtil.getRestaurantByRating(restaurantController.getAll(), ratingController.getAll()));
                 break;
             case "menu" :
@@ -109,24 +98,19 @@ public class RestaurantServlet extends HttpServlet {
         String but1 = request.getParameter("butOK");
         String but2 = request.getParameter("butCancel");
 
-        log.info("POSt action {}, userId", action, userID);
+        log.info("POSt action {}, userId {}", action, userID);
 
         if (restId != null && but1 != null) {
             if (LocalTime.now().isBefore(getTimeBefore())) {
                 Integer RestID = Integer.parseInt(restId);
+                Vote vote = new Vote(userService.get(authUserId()), restaurantController.get(RestID));
+                Integer IdRestBefore = voteController.update(vote, authUserId());
 
-//            System.out.println("POST but1 = "+but1 +"  voteId="+restId+"  getUserId="+authUserId());
-//                Vote vote = new Vote(authUserId(), Integer.parseInt(restId));
-                Vote vote = new Vote(authUserId());
-//                vote.setRestaurant(restaurantController.get(Integer.parseInt(restId)));
-                vote.setIdRestaurant(Integer.parseInt(restId));
-
-                Integer IdRestBefore = voteController.update(vote, Integer.parseInt(userID));
                 if (IdRestBefore != null) {
                     ratingController.incrementVote(IdRestBefore);
                 }
 
-                ratingController.setByVote(RestID, LocalDate.now());
+                ratingController.setByVote(RestID, LocalDate.now().atTime(00, 00));
 
                 request.setAttribute("rest", restaurantController.get(RestID));
                 request.setAttribute("menus", menuController.getAllByRestaurant(RestID));

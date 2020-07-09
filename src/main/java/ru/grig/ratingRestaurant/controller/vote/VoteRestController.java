@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.grig.ratingRestaurant.model.Vote;
+import ru.grig.ratingRestaurant.service.UserService;
 import ru.grig.ratingRestaurant.service.VoteService;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -41,19 +42,21 @@ public class VoteRestController {
         checkNew(vote);
         log.info("vote {}", vote);
         return voteService.create(vote, userId);
-//        return (vote.getVoteTime().isAfter(LocalTime.of(11, 00)) &&
-//                vote.getVoteDate().equals(LocalDate.now())) ?
-//                voteService.create(vote) : null;
     }
 
     public Integer update(Vote vote, int userId) {
-//        if(vote.getVoteTime().isAfter(getTimeBefore()) &&
-//                vote.getVoteDate().equals(LocalDate.now())) {
-//            voteService.update(vote);
-//            return true;
-//        }
         return voteService.update(vote, userId);
     }
 
+    public Vote getByUserAndDateNow(int userId) {
+        List<Vote> voteList = voteService.getAll();
+        for (Vote v : voteList){
+//            if (v.getIdUser() == userId && v.getVoteDate().equals(LocalDate.now())){
+            if (v.getUser().getId() == userId && v.getVoteDate().equals(LocalDate.now())){
+                return v;
+            }
+        }
+        return null;
+    }
 
 }

@@ -8,6 +8,7 @@ import ru.grig.ratingRestaurant.model.Rating;
 import ru.grig.ratingRestaurant.service.RatingService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import static ru.grig.ratingRestaurant.util.ValidationUtil.*;
 
@@ -32,10 +33,10 @@ public class RatingRestController {
         return ratingService.getAll();
     }
 
-    public Rating create(Rating rating){
+    public Rating create(Rating rating, int restId){
         log.info("create rating: {}", rating);
 //        checkNew(rating);
-        return ratingService.create(rating);
+        return ratingService.create(rating, restId);
     }
 
 //    public void update(Rating rating){
@@ -43,7 +44,8 @@ public class RatingRestController {
 //        ratingService.update(rating);
 //    }
 
-    public void setByVote(Integer idRestaurant, LocalDate date) {
+//    public void setByVote(Integer idRestaurant, LocalDate date) {
+    public void setByVote(Integer idRestaurant, LocalDateTime date) {
         log.info("setByVote");
         ratingService.setByVote(idRestaurant, date);
     }
