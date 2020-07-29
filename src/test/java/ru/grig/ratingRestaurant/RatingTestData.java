@@ -14,7 +14,7 @@ import static ru.grig.ratingRestaurant.RestaurantTestData.*;
 
 public class RatingTestData {
 
-    public static TestMatcher<Rating> RATING_MATCHER = TestMatcher.usingFieldsComparator("restaurant");
+    public static TestMatcher<Rating> RATING_MATCHER = TestMatcher.usingFieldsComparator(Rating.class,"restaurant");
 
     public static final int NOT_FOUNR_ID = 10;
     public static final int RATING_ID = 100015;
@@ -57,6 +57,9 @@ public class RatingTestData {
 //        updated.setCountVote(77);
         return updated;
     }
+
+    public static List<Rating> RATINGS = List.of(RATING_1, RATING_2, RATING_3, RATING_4, RATING_5, RATING_6, RATING_7, RATING_8, RATING_9);
+
 //    public static Rating getUpdate() {
 //        Rating updated = new Rating(RATING_ID, REST_1, 77, LocalDate.of(2020, Month.MARCH, 30).atTime(00, 00));
 ////        updated.setCountVote(77);

@@ -11,7 +11,7 @@
 <head>
     <title>Restaurants</title>
     <br>
-    <h3><a href="index.html">Main Page</a> </h3>
+    <h3><a href="../../index.html">Main Page</a> </h3>
     <hr>
     <h2>Restaurans</h2>
 </head>

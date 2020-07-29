@@ -12,7 +12,7 @@
 <head>
     <title>Vote</title>
     <br>
-    <h3><a href="index.html">Main Page</a> </h3>
+    <h3><a href="../../index.html">Main Page</a> </h3>
     <hr>
     <h3><a href="restaurants?action=list">Restaurants</a> </h3>
     <hr>

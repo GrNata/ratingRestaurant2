@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.grig.ratingRestaurant.ActiveDbProfileResolver;
 import ru.grig.ratingRestaurant.TimingExtension;
 
-import static ru.grig.ratingRestaurant.Profiles.JDBC;
+//import static ru.grig.ratingRestaurant.Profiles.JDBC;
 import static ru.grig.ratingRestaurant.Profiles.POSTGRES_DB;
 
 //@ContextConfiguration({

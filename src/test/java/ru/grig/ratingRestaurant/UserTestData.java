@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserTestData {
 
-    public static TestMatcher<User> USER_MATCHER = TestMatcher.usingFieldsComparator("registered", "role");
+    public static TestMatcher<User> USER_MATCHER = TestMatcher.usingFieldsComparator(User.class,"registered", "role");
 
     public static final int NOT_FOUNR_ID = 10;
     public static final int USER_ID = 100000;

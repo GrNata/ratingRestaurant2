@@ -8,6 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 
 <html>
 <head>
@@ -15,7 +17,7 @@
 </head>
 <body>
 <br>
-    <h3><a href="index.html">Main Page</a> </h3>
+    <h3><a href="../../index.html">Main Page</a> </h3>
     <hr>
     <h2>Users</h2>
 

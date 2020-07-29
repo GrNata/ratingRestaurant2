@@ -18,7 +18,7 @@ import static ru.grig.ratingRestaurant.UserTestData.*;
 public class VoteTestData {
 
 //    public static TestMatcher<Vote> VOTE_MATCHER = TestMatcher.usingFieldsComparator("users", "restaurant");
-    public static TestMatcher<Vote> VOTE_MATCHER = TestMatcher.usingFieldsComparator();
+    public static TestMatcher<Vote> VOTE_MATCHER = TestMatcher.usingFieldsComparator(Vote.class);
 
     public static final int NOT_FOUNR_ID = 10;
     public static final int VOTE_ID = 100024;

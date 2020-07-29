@@ -44,7 +44,7 @@ public class RootController {
 
     @GetMapping("/restaurants")
     public String getMeals(Model model) {
-        model.addAttribute("meals",
+        model.addAttribute("rest",
                 RestaurantUtil.getRestaurantByRating(restaurantService.getAll(), ratingService.getAll()));
 //                MealsUtil.getTos(mealService.getAll(SecurityUtil.authUserId()), SecurityUtil.authUserCaloriesPerDay()));
         return "restaurants";

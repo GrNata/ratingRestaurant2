@@ -5,6 +5,8 @@ import ru.grig.ratingRestaurant.service.AbstractUserServiceTest;
 
 import static ru.grig.ratingRestaurant.Profiles.*;
 
-@ActiveProfiles({POSTGRES_DB, JPA})
-public class JpaUserServiceTest extends AbstractUserServiceTest {
+//@ActiveProfiles({POSTGRES_DB, JPA})
+public class JpaUserServiceTest
+//        extends AbstractUserServiceTest
+{
 }

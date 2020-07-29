@@ -3,14 +3,24 @@ package ru.grig.ratingRestaurant;
 //import ru.grig.ratingRestaurant.model.AbstractBaseEntity.*;
 
 import ru.grig.ratingRestaurant.model.Restaurant;
+import ru.grig.ratingRestaurant.with_restaurant.RestaurantWithRating;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RestaurantTestData {
+
+    public static TestMatcher<Restaurant> RESTAURANT_MATCHER =
+            TestMatcher.usingFieldsComparator(Restaurant.class, "menu", "rating");
+    public static TestMatcher<RestaurantWithRating> RESTAURANT_WITH_RATING_MATCHER =
+            TestMatcher.usingFieldsComparator(RestaurantWithRating.class);
+    public static TestMatcher<RestaurantWithRating> RESTAURANT_LIST_WITH_RATING_MATCHER =
+            TestMatcher.usingFieldsComparator(RestaurantWithRating.class, "menu");
+
     public static final int START_REST_SEQ = 100003;
     public static final int NOT_FOUNR_ID = 10;
     public static final int REST_ID_1 = START_REST_SEQ;
@@ -30,6 +40,9 @@ public class RestaurantTestData {
         updated.setName("Updated Name");
         return updated;
     }
+
+    public static List<Restaurant> RESTAURANTS = List.of(REST_1, REST_2, REST_3);
+
 
     public static void assertMatch(Restaurant actual, Restaurant expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "registered", "roles");
