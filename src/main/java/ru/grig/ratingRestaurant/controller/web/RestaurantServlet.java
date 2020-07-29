@@ -3,14 +3,12 @@ package ru.grig.ratingRestaurant.controller.web;
 import org.slf4j.Logger;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.grig.ratingRestaurant.controller.SecurityUtil;
 import ru.grig.ratingRestaurant.controller.menu.MenuRestController;
 import ru.grig.ratingRestaurant.controller.rating.RatingRestController;
 import ru.grig.ratingRestaurant.controller.restaurant.RestaurantRestController;
 import ru.grig.ratingRestaurant.controller.vote.VoteRestController;
-import ru.grig.ratingRestaurant.model.Restaurant;
-import ru.grig.ratingRestaurant.model.User;
 import ru.grig.ratingRestaurant.model.Vote;
-import ru.grig.ratingRestaurant.service.RestaurantService;
 import ru.grig.ratingRestaurant.service.UserService;
 import ru.grig.ratingRestaurant.util.MenuUtil;
 import ru.grig.ratingRestaurant.util.RestaurantUtil;
@@ -27,7 +25,7 @@ import java.time.LocalTime;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-import static ru.grig.ratingRestaurant.controller.web.SecurityUtil.*;
+import static ru.grig.ratingRestaurant.controller.SecurityUtil.*;
 
 public class RestaurantServlet extends HttpServlet {
     private static final Logger log = getLogger(RestaurantServlet.class);

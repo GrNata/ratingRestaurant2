@@ -5,7 +5,7 @@ import ru.grig.ratingRestaurant.model.User;
 
 import java.util.List;
 
-import static ru.grig.ratingRestaurant.controller.web.SecurityUtil.authUserId;
+import static ru.grig.ratingRestaurant.controller.SecurityUtil.authUserId;
 
 @Controller
 public class ProfileRestController extends AbstractUserController {

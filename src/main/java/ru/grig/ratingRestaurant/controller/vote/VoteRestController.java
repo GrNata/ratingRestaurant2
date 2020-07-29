@@ -5,16 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.grig.ratingRestaurant.model.Vote;
-import ru.grig.ratingRestaurant.service.UserService;
 import ru.grig.ratingRestaurant.service.VoteService;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 import static ru.grig.ratingRestaurant.util.ValidationUtil.*;
-import static ru.grig.ratingRestaurant.controller.web.SecurityUtil.*;
 
 @Controller
 public class VoteRestController {

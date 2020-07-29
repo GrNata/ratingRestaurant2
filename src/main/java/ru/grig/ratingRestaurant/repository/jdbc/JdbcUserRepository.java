@@ -13,7 +13,7 @@ import ru.grig.ratingRestaurant.repository.UserRepository;
 
 import java.util.List;
 
-@Repository
+//@Repository
 public class JdbcUserRepository implements UserRepository {
     private static final BeanPropertyRowMapper ROW_MAPPER = BeanPropertyRowMapper.newInstance(User.class);
     private final JdbcTemplate jdbcTemplate;

@@ -12,7 +12,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
-@Repository
+//@Repository
 @Transactional(readOnly = true)
 public class JpaRestaurantRepository implements RestaurantRepository {
 

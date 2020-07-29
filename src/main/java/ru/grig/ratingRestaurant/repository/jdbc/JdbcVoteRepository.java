@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@Repository
+//@Repository
 public class JdbcVoteRepository implements VoteRepository {
     private static final BeanPropertyRowMapper<Vote> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Vote.class);
     private final JdbcTemplate jdbcTemplate;

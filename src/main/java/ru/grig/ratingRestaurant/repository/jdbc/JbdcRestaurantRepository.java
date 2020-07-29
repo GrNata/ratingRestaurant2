@@ -15,7 +15,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
-@Repository
+//@Repository
 public class JbdcRestaurantRepository implements RestaurantRepository {
     private static final BeanPropertyRowMapper<Restaurant> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Restaurant.class);
     private final JdbcTemplate jdbcTemplate;

@@ -14,7 +14,7 @@ import ru.grig.ratingRestaurant.repository.MenuRepository;
 
 import java.util.List;
 
-@Repository
+//@Repository
 public class JdbcMenuRepository implements MenuRepository {
     private static final BeanPropertyRowMapper<Menu> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Menu.class);
     private final JdbcTemplate jdbcTemplate;

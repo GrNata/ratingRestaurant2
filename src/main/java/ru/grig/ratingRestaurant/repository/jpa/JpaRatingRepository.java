@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Repository
+//@Repository
 @Transactional(readOnly = true)
 public class JpaRatingRepository implements RatingRepository {
 

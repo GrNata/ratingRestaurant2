@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Repository
+//@Repository
 public class JdbcRatingRepository implements RatingRepository {
     private static final BeanPropertyRowMapper<Rating> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Rating.class);
     private final JdbcTemplate jdbcTemplate;

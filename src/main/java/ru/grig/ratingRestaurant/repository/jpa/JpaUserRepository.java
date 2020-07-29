@@ -12,7 +12,7 @@ import javax.persistence.Query;
 import java.util.List;
 
 
-@Repository
+//@Repository
 @Transactional(readOnly = true)
 public class JpaUserRepository implements UserRepository {
 

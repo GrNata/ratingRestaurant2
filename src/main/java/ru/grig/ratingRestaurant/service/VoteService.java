@@ -6,10 +6,9 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import ru.grig.ratingRestaurant.controller.web.SecurityUtil;
+import ru.grig.ratingRestaurant.controller.SecurityUtil;
 import ru.grig.ratingRestaurant.model.User;
 import ru.grig.ratingRestaurant.model.Vote;
-import ru.grig.ratingRestaurant.repository.RatingRepository;
 import ru.grig.ratingRestaurant.repository.UserRepository;
 import ru.grig.ratingRestaurant.repository.VoteRepository;
 
@@ -19,7 +18,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static ru.grig.ratingRestaurant.util.ValidationUtil.checkNotFoundWithId;
-import static ru.grig.ratingRestaurant.controller.web.SecurityUtil.*;
+import static ru.grig.ratingRestaurant.controller.SecurityUtil.*;
 
 @Service
 public class VoteService {

@@ -13,7 +13,7 @@ import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
 import java.util.List;
 
-@Repository
+//@Repository
 @Transactional(readOnly = true)
 public class JpaVoteRepository implements VoteRepository {
 

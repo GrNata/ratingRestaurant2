@@ -1,4 +1,4 @@
-package ru.grig.ratingRestaurant.controller.web;
+package ru.grig.ratingRestaurant.controller;
 
 import java.time.LocalTime;
 
