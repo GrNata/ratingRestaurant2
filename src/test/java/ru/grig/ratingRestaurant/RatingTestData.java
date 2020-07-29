@@ -14,7 +14,7 @@ import static ru.grig.ratingRestaurant.RestaurantTestData.*;
 
 public class RatingTestData {
 
-    public static TestMatcher<Rating> RATING_MATCHER = TestMatcher.usingFieldsComparator("restaurant");
+    public static TestMatcher<Rating> RATING_MATCHER = TestMatcher.usingFieldsComparator(Rating.class,"restaurant");
 
     public static final int NOT_FOUNR_ID = 10;
     public static final int RATING_ID = 100015;
