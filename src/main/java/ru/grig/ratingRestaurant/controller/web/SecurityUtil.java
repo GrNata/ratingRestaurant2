@@ -9,6 +9,7 @@ public class SecurityUtil {
     }
 
     private static int id;
+    private static int restId;
 
     public static int authUserId() {
         return id;
@@ -32,5 +33,13 @@ public class SecurityUtil {
     }
 
     public static LocalTime getTimeBefore(){    return TIME_BEFORE; }
+
+    public static int getIdRestaurant() {
+        return restId;
+    }
+
+    public static void setRestaurantId(int restId) {
+        SecurityUtil.restId = restId;
+    }
 
 }

@@ -62,4 +62,9 @@ public class JpaRatingRepository implements RatingRepository {
                 .getResultList();
         return DataAccessUtils.singleResult(ratings);
     }
+
+    @Override
+    public Rating getByRestaurantName(String name) {
+        return null;
+    }
 }

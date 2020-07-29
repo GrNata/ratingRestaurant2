@@ -2,14 +2,13 @@ package ru.grig.ratingRestaurant;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.grig.ratingRestaurant.controller.menu.MenuRestController;
-import ru.grig.ratingRestaurant.controller.restaurant.RestaurantRestController;
-import ru.grig.ratingRestaurant.controller.user.AdminRestController;
+import ru.grig.ratingRestaurant.controller.web.menu.MenuRestController;
+import ru.grig.ratingRestaurant.controller.web.restaurant.RestaurantRestController;
+import ru.grig.ratingRestaurant.controller.web.user.AdminRestController;
 import ru.grig.ratingRestaurant.model.Menu;
 import ru.grig.ratingRestaurant.model.Role;
 import ru.grig.ratingRestaurant.model.User;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 
 public class MainSpring {
@@ -22,13 +21,13 @@ public class MainSpring {
             adminRestController.create(new User(null, "Roma", "roma@mail.ru", "4444", Role.ROLE_USER));
 
             RestaurantRestController restController = appCxt.getBean(RestaurantRestController.class);
-            System.out.println(restController.get(3));
+//            System.out.println(restController.get(3));
 
-            MenuRestController menuRestController = appCxt.getBean(MenuRestController.class);
-            System.out.println(menuRestController.get(2, 1));
-//            menuRestController.update(new Menu((long) 2, 3, "333-DISH", 100), 2);
-            menuRestController.update(new Menu((int) 2, "333-DISH", 100), 2);
-            System.out.println(menuRestController.get(2, 1));
+//            MenuRestController menuRestController = appCxt.getBean(MenuRestController.class);
+//            System.out.println(menuRestController.get(2, 1));
+////            menuRestController.update(new Menu((long) 2, 3, "333-DISH", 100), 2);
+//            menuRestController.update(new Menu((int) 2, "333-DISH", 100), 2);
+//            System.out.println(menuRestController.get(2, 1));
         }
     }
 }

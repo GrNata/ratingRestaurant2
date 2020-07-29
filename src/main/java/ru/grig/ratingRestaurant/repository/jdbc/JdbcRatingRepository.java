@@ -81,6 +81,11 @@ public class JdbcRatingRepository implements RatingRepository {
         return null;
     }
 
+    @Override
+    public Rating getByRestaurantName(String name) {
+        return null;
+    }
+
     //    @Override
 //    public void setByVote(Long idRestaurant, LocalDate date) {
 //

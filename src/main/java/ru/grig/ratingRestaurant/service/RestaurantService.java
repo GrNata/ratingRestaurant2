@@ -1,7 +1,10 @@
 package ru.grig.ratingRestaurant.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.grig.ratingRestaurant.model.Menu;
 import ru.grig.ratingRestaurant.model.Restaurant;
+import ru.grig.ratingRestaurant.repository.MenuRepository;
 import ru.grig.ratingRestaurant.repository.RestaurantRepository;
 import org.springframework.util.Assert;
 
@@ -39,4 +42,19 @@ public class RestaurantService {
         Assert.notNull(restaurant, "Restaurant must not be NULL");
         checkNotFoundWithId(restaurantRepository.save(restaurant), restaurant.getId());
     }
+
+    public int updateCountMenu(Restaurant restaurant, int count) {
+        int countMenu = restaurant.getMenu() + count;
+        restaurant.setMenu(countMenu);
+        update(restaurant);
+        return countMenu;
+    }
+
+//    public List<Restaurant> getAllByCountMenu() {
+//        List<Restaurant> restaurants = getAll();
+//        for (Restaurant r : restaurants) {
+//            List<Menu> menus = menuRepository
+//        }
+//        return null;
+//    }
 }

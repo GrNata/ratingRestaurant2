@@ -15,14 +15,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserTestData {
 
-    public static TestMatcher<User> USER_MATCHER = TestMatcher.usingFieldsComparator("registered", "role");
+    public static TestMatcher<User> USER_MATCHER = TestMatcher.usingFieldsComparator(User.class, "registered", "meals");
 
     public static final int NOT_FOUNR_ID = 10;
     public static final int USER_ID = 100000;
+    public static final int ADMIN_ID = 100000;
     public static final String USER_EMAIL = "dima@gmail.com";
 
-    public static final User USER_1 = new User(USER_ID, "Nata", "nata@gmail.com", "11111",  Role.ROLE_ADMIN, Role.ROLE_USER);
-    public static final User USER_2 = new User(USER_ID+1, "Dima", "dima@gmail.com", "22222",  Role.ROLE_USER);
+    public static final User USER_1 = new User(USER_ID, "Nata", "nata@gmail.com", "11111",  Role.ROLE_USER);
+    public static final User USER_2 = new User(USER_ID+1, "Dima", "dima@gmail.com", "22222",  Role.ROLE_ADMIN);
     public static final User USER_3 = new User(USER_ID+2, "Seva", "seva@gmail.com", "33333", Role.ROLE_USER);
 
     public static User getNew() {

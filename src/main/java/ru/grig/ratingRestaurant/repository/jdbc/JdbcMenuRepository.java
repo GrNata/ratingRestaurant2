@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import ru.grig.ratingRestaurant.controller.menu.MenuRestController;
+//import ru.grig.ratingRestaurant.controller.web.menu.MenuRestController;
 import ru.grig.ratingRestaurant.model.Menu;
 import ru.grig.ratingRestaurant.repository.MenuRepository;
 

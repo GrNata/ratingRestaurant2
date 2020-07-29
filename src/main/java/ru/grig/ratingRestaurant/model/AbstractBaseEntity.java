@@ -1,9 +1,15 @@
 package ru.grig.ratingRestaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
 import javax.persistence.*;
+
+//import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
+//import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
+//@JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, isGetterVisibility = NONE, setterVisibility = NONE)
 public abstract class AbstractBaseEntity {
     public static final int START_SEQ = 100000;
 //    public static final int START_USER_SEQ = 100000;

@@ -23,4 +23,6 @@ public interface RatingRepository {
     List<Rating> getAllByRestaurant(int idRestaurant);
 
     Rating getByRestaurantByDate(int idRest, LocalDate date);
+
+    Rating getByRestaurantName(String name);
 }

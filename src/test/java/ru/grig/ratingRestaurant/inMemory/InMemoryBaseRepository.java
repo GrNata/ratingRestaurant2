@@ -1,6 +1,6 @@
 package ru.grig.ratingRestaurant.inMemory;
 
-import jdk.nashorn.internal.ir.IdentNode;
+//import jdk.nashorn.internal.ir.IdentNode;
 import ru.grig.ratingRestaurant.model.AbstractBaseEntity;
 
 import java.util.Collection;

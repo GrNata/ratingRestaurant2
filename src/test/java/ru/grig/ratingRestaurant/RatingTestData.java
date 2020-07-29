@@ -5,6 +5,7 @@ import ru.grig.ratingRestaurant.model.Rating;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static ru.grig.ratingRestaurant.RestaurantTestData.*;
@@ -12,7 +13,7 @@ import static ru.grig.ratingRestaurant.RestaurantTestData.*;
 
 public class RatingTestData {
 
-    public static TestMatcher<Rating> RATING_MATCHER = TestMatcher.usingFieldsComparator("restaurant");
+    public static TestMatcher<Rating> RATING_MATCHER = TestMatcher.usingFieldsComparator(Rating.class,"restaurant");
 
     public static final int NOT_FOUNR_ID = 10;
     public static final int RATING_ID = 100015;
@@ -45,6 +46,8 @@ public class RatingTestData {
 //        updated.setCountVote(77);
         return updated;
     }
+
+    public static List<Rating> RATINGS = List.of(RATING_1, RATING_2, RATING_3, RATING_4, RATING_5, RATING_6, RATING_7, RATING_8, RATING_9);
 
 //    public static void assertMatch(Rating actual, Rating expexted) {
 //        assertThat(actual).isEqualTo(expexted);

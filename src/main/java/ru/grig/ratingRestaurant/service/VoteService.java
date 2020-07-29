@@ -2,20 +2,14 @@ package ru.grig.ratingRestaurant.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import ru.grig.ratingRestaurant.controller.web.SecurityUtil;
-import ru.grig.ratingRestaurant.model.User;
 import ru.grig.ratingRestaurant.model.Vote;
-import ru.grig.ratingRestaurant.repository.UserRepository;
 import ru.grig.ratingRestaurant.repository.VoteRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static ru.grig.ratingRestaurant.util.ValidationUtil.checkNotFoundWithId;
 import static ru.grig.ratingRestaurant.controller.web.SecurityUtil.*;
@@ -60,17 +54,14 @@ public class VoteService {
     public Integer update(Vote vote, int userId) {
         Assert.notNull(vote, "Restaurant must not be NULL");
         Integer idRest = null;
-//        if (LocalTime.now().isBefore(getTimeBefore())) {
-//            Vote voteGet = getByUserIdAndDateNow();
             Vote voteGet = getByDateNow(userId);
-//            System.out.println("VoreService update / getByUserIdAndDateNow - " + voteGet);
+            System.out.println("VoreService update / getByUserIdAndDateNow - " + voteGet);
             if (voteGet != null) {
                 idRest = voteGet.getIdRestaurant();
 //                idRest = voteGet.getRestaurant().getId();
                 vote.setId(voteGet.getId());
             }
             voteRepository.save(vote, userId);
-//        }
         return idRest;
 //        checkNotFoundWithId(voteRepository.save(vote), vote.getId());
     }

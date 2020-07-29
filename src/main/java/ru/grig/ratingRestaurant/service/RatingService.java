@@ -1,12 +1,11 @@
 package ru.grig.ratingRestaurant.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import ru.grig.ratingRestaurant.model.Menu;
 import ru.grig.ratingRestaurant.model.Rating;
-import ru.grig.ratingRestaurant.repository.MenuRepository;
 import ru.grig.ratingRestaurant.repository.RatingRepository;
+import ru.grig.ratingRestaurant.repository.RestaurantRepository;
+import ru.grig.ratingRestaurant.repository.datajpa.DatajpaRatingRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,10 +16,12 @@ import static ru.grig.ratingRestaurant.util.ValidationUtil.*;
 @Service
 public class RatingService {
 
-    private RatingRepository ratingRepository;
+    private final RatingRepository ratingRepository;
+    private final RestaurantRepository restaurantRepository;
 
-    public RatingService(RatingRepository ratingRepository) {
+    public RatingService(RatingRepository ratingRepository, RestaurantRepository restaurantRepository) {
         this.ratingRepository = ratingRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
     public Rating create(Rating rating) {
@@ -57,35 +58,14 @@ public class RatingService {
             int vote = rating.getCountVote();
             vote++;
             rating.setCountVote(vote);
-            ratingRepository.save(rating);
+//            ratingRepository.save(rating);
+        } else {
+            rating = new Rating(idRestaurant, 1, date);
         }
-////        List<Rating> all = ratingRepository.getAll();
-//        List<Rating> all = getAllByRestaurant(idRestaurant);
-//
-//        System.out.println("ALL: "+all);
-//
-//        int vote = 0;
-//        boolean isRest = true;
-//
-//        for (Rating rating : all) {
-////            if (rating.getDateVote().equals(date) && rating.getIdRestaurant() == idRestaurant) {
-////            if (rating.getDateVote().equals(date) && rating.getRestaurant().getId() == idRestaurant) {
-//            if (rating.getDateVote().equals(date)) {
-//                vote = rating.getCountVote();
-//                vote++;
-//                rating.setCountVote(vote);
-//
-//                System.out.println("RATING: "+rating);
-//
-//                ratingRepository.save(rating);
-//                isRest = false;
-//                break;
-//            }
-//        }
-//        if (isRest){
-//            vote++;
-//            ratingRepository.save(new Rating(idRestaurant, vote, date));  //  ????
-//        }
+//        System.out.println("SET_BY_VOTE rating : "+rating);
+        rating.setRestaurant(restaurantRepository.get(idRestaurant));
+        ratingRepository.save(rating);
+//        System.out.println("SET_BY_VOTE SAVE : "+rating);
     }
 
     public List<Rating> getAllRatingByRestaurant(int idRest) {
@@ -113,10 +93,12 @@ public class RatingService {
     public void incrementVote(Integer idRest){
 //        Rating rating = getByIdRestDataNow(idRest);
         Rating rating = ratingRepository.getByRestaurantByDate(idRest, LocalDate.now());
+        System.out.println("RATING INCREMENT : "+rating);
         if (rating != null) {
             int vote = rating.getCountVote() - 1;
             rating.setCountVote(vote);
             ratingRepository.save(rating);
+            System.out.println("INCREMENT SAVE : "+rating);
         }
     }
 
@@ -143,5 +125,9 @@ public class RatingService {
 
     public Rating getByRestaurantByDate(int idRest, LocalDate date) {
         return ratingRepository.getByRestaurantByDate(idRest, date);
+    }
+
+    public Rating getByRestaurantName(String name) {
+        return ratingRepository.getByRestaurantName(name);
     }
 }

@@ -5,8 +5,11 @@ import ru.grig.ratingRestaurant.util.exception.NotFoundException;
 
 public class ValidationUtil {
 
+    private ValidationUtil() {}
+
     public static <T> T checkNotFoundWithId(T object, int id) {
-        checkNotFound(object != null, "id = " + id);
+//        checkNotFound(object != null, "id = " + id);
+        checkNotFoundWithId(object != null, id);
         return object;
     }
 
@@ -39,5 +42,16 @@ public class ValidationUtil {
             if (entity.getId() != id) {
                 throw new IllegalArgumentException(entity + " must be with id=" + id);
             }
+    }
+
+    //  http://stackoverflow.com/a/28565320/548473
+    public static Throwable getRootCause(Throwable t) {
+        Throwable result = t;
+        Throwable cause;
+
+        while (null != (cause = result.getCause()) && (result != cause)) {
+            result = cause;
+        }
+        return result;
     }
 }

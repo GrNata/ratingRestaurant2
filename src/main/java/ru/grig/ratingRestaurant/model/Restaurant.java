@@ -46,6 +46,13 @@ public class Restaurant extends AbstractNameEntity{
         this.rating = rating;
     }
 
+    public Restaurant(int menu, int rating) {
+        this(null, null, menu, rating);
+    }
+
+    public Restaurant(String name, int menu) {
+        this(null, name, menu, 0);
+    }
 
     public int getMenu() {
         return menu;
