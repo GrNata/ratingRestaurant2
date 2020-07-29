@@ -1,7 +1,8 @@
 package ru.grig.ratingRestaurant.service;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+//import org.junit.Test;
+//import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -16,27 +17,29 @@ import ru.grig.ratingRestaurant.util.exception.NotFoundException;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static ru.grig.ratingRestaurant.VoteTestData.*;
 import static ru.grig.ratingRestaurant.UserTestData.USER_ID;
 
-import static org.junit.Assert.*;
+//import static org.junit.Assert.*;
 
-@ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
-@RunWith(SpringRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
-public class VoteServiceTest {
+//@ContextConfiguration({
+//        "classpath:spring/spring-app.xml",
+//        "classpath:spring/spring-db.xml"
+//})
+//@RunWith(SpringRunner.class)
+//@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+//@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
+public abstract class AbstractVoteServiceTest extends AbstractServiceTest{
 
     @Autowired
-    VoteService service;
+    protected VoteService service;
     @Autowired
     VoteRepository repository;
 
     @Test
-    public void create() throws Exception{
+    void create() throws Exception{
+        System.out.println("CREATE");
         Vote created = service.create(getNew(), USER_ID);
         Integer newId = created.getId();
         NEW_VOTE.setId(newId);
@@ -45,49 +48,49 @@ public class VoteServiceTest {
     }
 
     @Test
-    public void get() throws Exception{
+    void get() throws Exception{
         Vote vote = service.get(VOTE_ID, USER_ID);
         VOTE_MATCHER.assertMatch(vote, VOTE_1);
     }
 
     @Test
-    public void getNotFound() throws Exception {
+    void getNotFound() throws Exception {
         assertThrows(NotFoundException.class, () -> service.get(NOT_FOUNR_ID, USER_ID));
         assertThrows(NotFoundException.class, () -> service.get(VOTE_ID, NOT_FOUNR_ID));
     }
 
     @Test
-    public void delete() throws Exception {
+    void delete() throws Exception {
         service.delete(VOTE_ID, USER_ID);
         assertFalse(repository.delete(VOTE_ID, USER_ID));
     }
 
     @Test
-    public void deleteNotFound() throws Exception {
+    void deleteNotFound() throws Exception {
         assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUNR_ID, USER_ID));
         assertThrows(NotFoundException.class, () -> service.delete(VOTE_ID, NOT_FOUNR_ID));
     }
 
     @Test
-    public void getAll() throws Exception {
+    void getAll() throws Exception {
         List<Vote> all = service.getAll();
         VOTE_MATCHER.assertMatch(all, VOTE_1, VOTE_2, VOTE_3);
     }
 
     @Test
-    public void getAllByUser() throws Exception {
+    void getAllByUser() throws Exception {
         List<Vote> all = service.getAllByUser(USER_ID);
         VOTE_MATCHER.assertMatch(all, VOTE_1);
     }
 
     @Test
-    public void getAllByUserNotFound() throws Exception {
+    void getAllByUserNotFound() throws Exception {
         System.out.println("ALL: "+service.getAllByUser(NOT_FOUNR_ID));
         assertNull(service.getAllByUser(NOT_FOUNR_ID));
     }
 
     @Test       //  может меняться только ресторан
-    public void update() throws Exception {
+    void update() throws Exception {
         Vote updated = getUpdate();
         service.update(updated, USER_ID);
         Vote vote = service.get(VOTE_ID, USER_ID);
@@ -95,7 +98,7 @@ public class VoteServiceTest {
     }
 
     @Test     //  исключен метод
-    public void getByDate() {
+    void getByDate() {
         VOTE_MATCHER.assertMatch(service.getByDate(USER_ID, DATE), getForDate());
     }
 

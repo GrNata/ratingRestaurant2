@@ -34,7 +34,7 @@ public class VoteService {
 //        this.ratingService = (RatingService) ratingService;
     }
 
-    @CacheEvict(value = "vote", allEntries = true)
+//    @CacheEvict(value = "vote", allEntries = true)
     public Vote create(Vote vote, int userId) {
         log.info("create user: {}", vote);
         Assert.notNull(vote, "Vote must not be NULL");
@@ -49,12 +49,12 @@ public class VoteService {
 //        return checkNotFoundWithId(voteRepository.get(id, userId), id);
     }
 
-    @CacheEvict(value = "vote", allEntries = true)
+//    @CacheEvict(value = "vote", allEntries = true)
     public void delete(int id, int userId) {
         checkNotFoundWithId(voteRepository.delete(id, userId), id);
     }
 
-    @Cacheable("vote")
+//    @Cacheable("vote")
     public List<Vote> getAll(){
         return voteRepository.getAll();
     }
@@ -63,7 +63,7 @@ public class VoteService {
         List<Vote> votes = voteRepository.getAllByUser(userId);
         return votes.isEmpty() ? null : votes ; }
 
-    @CacheEvict(value = "vote", allEntries = true)
+//    @CacheEvict(value = "vote", allEntries = true)
     public Integer update(Vote vote, int userId) {
         Assert.notNull(vote, "Restaurant must not be NULL");
 

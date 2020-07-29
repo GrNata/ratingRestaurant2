@@ -2,8 +2,8 @@ package ru.grig.ratingRestaurant;
 
 public class Profiles {
     public static final String
-            JDBC = "jdbc",
-            JPA = "jpa",
+//            JDBC = "jdbc",
+//            JPA = "jpa",
             DATAJPA = "datajpa";
 
     public static final String REPOSITORY_IMPLEMENTATION = DATAJPA;

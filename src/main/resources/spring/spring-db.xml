@@ -54,19 +54,20 @@
 
 <!--                    REPOSITORY          -->
 
-    <beans profile="jdbc">
-        <context:component-scan base-package="ru.grig.ratingRestaurant.**.repository.jdbc"/>
-        <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-            <constructor-arg ref="dataSource"/>
-        </bean>
+<!--    <beans profile="jdbc">-->
+<!--        <context:component-scan base-package="ru.grig.ratingRestaurant.**.repository.jdbc"/>-->
+<!--        <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">-->
+<!--            <constructor-arg ref="dataSource"/>-->
+<!--        </bean>-->
 
-        <bean id="namedJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
-            <constructor-arg ref="jdbcTemplate"/>
-        </bean>
+<!--        <bean id="namedJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">-->
+<!--            <constructor-arg ref="jdbcTemplate"/>-->
+<!--        </bean>-->
 
-    </beans>
+<!--    </beans>-->
 
-    <beans profile="jpa, datajpa">
+<!--    <beans profile="jpa, datajpa">-->
+    <beans profile="datajpa">
         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
               p:dataSource-ref="dataSource"
               p:packagesToScan="ru.grig.ratingRestaurant.**.model">
@@ -98,9 +99,9 @@
         <!--            <jpa:repositories base-package="ru.grig.ratingRestaurant.**.datajpa"/>-->
 
     </beans>
-    <beans profile="jpa">
-        <context:component-scan base-package="ru.grig.ratingRestaurant.**.repository.jpa"/>
-    </beans>
+<!--    <beans profile="jpa">-->
+<!--        <context:component-scan base-package="ru.grig.ratingRestaurant.**.repository.jpa"/>-->
+<!--    </beans>-->
 
     <beans profile="datajpa">
         <context:component-scan base-package="ru.grig.ratingRestaurant.**.repository.datajpa"/>

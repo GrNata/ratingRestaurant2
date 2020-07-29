@@ -3,6 +3,9 @@ package ru.grig.ratingRestaurant.util;
 import ru.grig.ratingRestaurant.model.AbstractBaseEntity;
 import ru.grig.ratingRestaurant.util.exception.NotFoundException;
 
+import javax.validation.*;
+import java.util.Set;
+
 public class ValidationUtil {
 
     public static <T> T checkNotFoundWithId(T object, int id) {
@@ -39,5 +42,34 @@ public class ValidationUtil {
             if (entity.getId() != id) {
                 throw new IllegalArgumentException(entity + " must be with id=" + id);
             }
+    }
+
+
+    //  http://stackoverflow.com/a/28565320/548473
+    public static Throwable getRootCause(Throwable t) {
+        Throwable result = t;
+        Throwable cause;
+
+        while (null != (cause = result.getCause()) && (result != cause)) {
+            result = cause;
+        }
+        return result;
+    }
+
+    private static final Validator validator;
+
+    static {
+        //  From Javadoc: implementations are thread-safe and instances are typically cached and reused.
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        //  From Javadoc: implementations of this interface must be thread-safe
+        validator = factory.getValidator();
+    }
+
+    public static <T> void validate(T bean) {
+        // https://alexkosarev.name/2018/07/30/bean-validation-api/
+        Set<ConstraintViolation<T>> violations = validator.validate(bean);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
     }
 }
